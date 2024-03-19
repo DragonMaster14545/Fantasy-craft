@@ -12,7 +12,7 @@ ServerEvents.commandRegistry(e => {
     e.register(cmd)
   })
   
-// TODO Photon partial block particle spawn
+// TODO Veil documentation/ ingame editor
 
 
 // TODO Enemy spawn system

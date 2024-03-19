@@ -3,6 +3,8 @@ backups/
 coremods/
 crash-reports/
 config/spark/
+data/
+!kubejs/data/
 ESM/
 fancymenu_data/
 journeymap/
