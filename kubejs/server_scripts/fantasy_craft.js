@@ -154,7 +154,7 @@ function setUpPlayer(e,player) {
     }
     playerSaveData.servants = []
     playerPersistantData.initiated = true
-    player.teleportTo(e.server.getLevel('fantasy_craft:void_dimension'), 0, 0, 0, [], player.yaw, player.pitch)
+    player.teleportTo(e.server.getLevel('fantasy_craft:void_dimension1'), 0, 0, 0, [], player.yaw, player.pitch)
     e.server.runCommandSilent('/execute in fantasy_craft:void_dimension run photon fx kubejs:player_spawn block 0 0 0')
     e.server.runCommandSilent(`/openguiscreen greeting_dialogue ${player.username}`)
     }
