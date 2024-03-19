@@ -57,7 +57,6 @@ function updateItem(e,player,item) {
         }
         if(customData.armor) {
             if(itemTypes.armor.includes(customData.type)) {
-                //item.addAttributeModifier("minecraft:generic.armor",new AttributeModifier('Armor',customData.armor,AttributeModifier$Operation.ADDITION),LivingEntity.getEquipmentSlotForItem(item))
                 item = item.withLore(Text.blue('+'+customData.armor+' armor'))
             }
         }
@@ -68,7 +67,6 @@ function updateItem(e,player,item) {
         }
         if(customData.damage) {
             if(itemTypes.meleWeapons.includes(customData.type)) {
-                //item.addAttributeModifier("minecraft:generic.attack_damage",new AttributeModifier('Damage',customData.damage,AttributeModifier$Operation.ADDITION),EquipmentSlot.MAINHAND)
                 item = item.withLore(Text.red('+'+customData.damage+' damage'))
             } else if(itemTypes.wands.includes(customData.type)) {
                 item = item.withLore(Text.red('+'+customData.damage+' damage'))
@@ -124,7 +122,7 @@ function giveCustomItem(e,player,itemId,data) {
     let itemDirectory = e.server.persistentData.playerData[player.stringUuid].itemDetails
     let nextId = itemDirectory.nextId
     itemDirectory['id'+nextId] = data
-    e.server.runCommandSilent(`/give ${player.username} ${itemId}{customDataId:${'id'+nextId}}`)
+    player.give(Item.of(itemId,1,{customDataId:'id'+nextId}))
     itemDirectory.nextId += 1
 }
 function projectileTick(e) {
@@ -181,7 +179,7 @@ function projectileTick(e) {
                         }
                     }
                 }
-                if (!(e.server.runCommandSilent(`execute positioned ${projectile.x.toFixed(2)} ${projectile.y.toFixed(2)} ${projectile.z.toFixed(2)} in ${projectile.dimension} if entity @a[distance=..30]`))) {
+                if (block.getPlayersInRadius(30) < 1) {
                     projectile.remove = true
                 } else if (!(block.id == 'minecraft:air')) {
                     projectile.remove = true

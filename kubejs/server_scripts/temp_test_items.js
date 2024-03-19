@@ -88,7 +88,7 @@ ItemEvents.rightClicked('kubejs:cheat_item',e => {
         //giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'wand',level:1,xp:0,maxXp:10,manaCost:1,speed:1,area:3,types:['ice','water'],levelUpRewards:[{owned:0,id:'damage',amount:1},{owned:0,id:'manaCost',amount:-0.2},{owned:0,id:'speed',amount:0.5}]})
         //giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'wand',level:1,xp:0,maxXp:10,manaCost:1,speed:1,area:3,pierce:2,types:['ice','water'],levelUpRewards:[{owned:0,id:'damage',amount:1},{owned:0,id:'manaCost',amount:-0.2},{owned:0,id:'speed',amount:0.5}]})
         //giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'wand',level:1,xp:0,maxXp:10,manaCost:1,speed:1,area:3,pierce:10,types:['ice','water'],levelUpRewards:[{owned:0,id:'damage',amount:1},{owned:0,id:'manaCost',amount:-0.2},{owned:0,id:'speed',amount:0.5}]})
-        //giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'wand',level:1,xp:0,maxXp:10,manaCost:1,speed:1,types:['ice','water'],effects:{poison:{duration:100,level:1}},levelUpRewards:[{owned:0,id:'damage',amount:1},{owned:0,id:'manaCost',amount:-0.2},{owned:0,id:'speed',amount:0.5}]})
+        giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'wand',level:1,xp:0,maxXp:10,manaCost:1,speed:1,types:['ice','water'],effects:{poison:{duration:100,level:1}},levelUpRewards:[{owned:0,id:'damage',amount:1},{owned:0,id:'manaCost',amount:-0.2},{owned:0,id:'speed',amount:0.5}]})
     } else if(count == 5) {
         let manager = $VeilRenderSystem.renderer().particleManager
         /*
