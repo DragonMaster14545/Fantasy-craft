@@ -1,0 +1,30 @@
+{
+  "render_style": "CUBE",
+  "init_modules": [
+    "kubejs:rocket",
+    "kubejs:rocket_light"
+  ],
+  "update_modules": [],
+  "collision_modules": [
+    {
+      "module": "die_on_collision"
+    },
+    "kubejs:collision/rocket_explode"
+  ],
+  "forces": [
+    "kubejs:force/gravity/rocket",
+    "kubejs:force/point_attractor/rocket_point_attractor",
+    "kubejs:force/vortex/rocket_vortex",
+    "kubejs:force/drag/rocket_drag",
+    "kubejs:force/vector_field/rocket_field"
+  ],
+  "render_modules": [
+    "kubejs:trail/rocket",
+    "kubejs:trail/rocket_add",
+    "kubejs:trail/rocket_hot",
+    "kubejs:color/rocket"
+  ],
+  "face_velocity": true,
+  "velocity_stretch_factor": 4.0,
+  "should_collide": true
+}

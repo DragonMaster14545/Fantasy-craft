@@ -1,0 +1,4 @@
+{
+  "module": "sub_emitter_collision",
+  "subemitter": "kubejs:basic_smoke"
+}

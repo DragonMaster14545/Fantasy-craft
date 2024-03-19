@@ -1,0 +1,48 @@
+completedTutorials=[
+    introduction,
+    "box_select_tool",
+    "magic_select_tool",
+    selection,
+    clentaminator,
+    "sculpt_draw_tool",
+    "slope_tool"
+]
+customDowngradeSuggestions=[]
+globalScale=1
+lastTranslationCount=0
+openEditorWindowTypes=[
+    tools,
+    "tool_options",
+    palette,
+    "active_block",
+    history,
+    "world_properties",
+    clipboard,
+    "target_info"
+]
+rootEditorPalette {
+    blocks=[]
+    "c_City" {
+        blocks=[
+            "minecraft:stone",
+            "minecraft:gravel",
+            "minecraft:stone_bricks",
+            "minecraft:cobblestone",
+            "minecraft:coarse_dirt"
+        ]
+    }
+    "c_Street1" {
+        blocks=[
+            "minecraft:stone",
+            "minecraft:gravel",
+            "minecraft:stone_bricks",
+            "minecraft:cobblestone",
+            "minecraft:coarse_dirt"
+        ]
+    }
+}
+savedCustomTheme="ASel0AAAlJbUd1aURhcmsAAA=="
+showCloseWindowButton=false
+showNon90DegreeRotationWarning=true
+showToolMaskOpenWarning=true
+shownIntroduction=true

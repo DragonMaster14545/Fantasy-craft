@@ -1,0 +1,151 @@
+type = fancymenu_layout
+
+layout-meta {
+  identifier = changelog
+  render_custom_elements_behind_vanilla = false
+  last_edited_time = 1706635404673
+  is_enabled = true
+  randommode = false
+  randomgroup = 1
+  randomonlyfirsttime = false
+  layout_index = 0
+  [loading_requirement_container_meta:208a3dae-514c-4806-af90-5bef529015e2-1706635327612] = [groups:][instances:]
+}
+
+customization {
+  action = setscale
+  scale = 3.0
+}
+
+customization {
+  action = autoscale
+  basewidth = 1920
+  baseheight = 991
+}
+
+menu_background {
+  slideshow_name = main_screen
+  background_type = slideshow
+}
+
+customization {
+  action = backgroundoptions
+  keepaspectratio = false
+}
+
+scroll_list_customization {
+  preserve_scroll_list_header_footer_aspect_ratio = true
+  render_scroll_list_header_shadow = true
+  render_scroll_list_footer_shadow = true
+  show_scroll_list_header_footer_preview_in_editor = false
+}
+
+element {
+  interactable = true
+  source = Changelog
+  source_mode = direct
+  shadow = true
+  scale = 2.0
+  base_color = #00FF00
+  text_border = 2
+  line_spacing = 2
+  enable_scrolling = true
+  auto_line_wrapping = true
+  remove_html_breaks = true
+  code_block_single_color = #737373FF
+  code_block_multi_color = #565656FF
+  headline_line_color = #A9A9A9FF
+  separation_line_color = #A9A9A9FF
+  hyperlink_color = #0771FCFF
+  quote_color = #818181FF
+  quote_indent = 8.0
+  quote_italic = false
+  bullet_list_dot_color = #A9A9A9FF
+  bullet_list_indent = 8.0
+  bullet_list_spacing = 3.0
+  parse_markdown = true
+  element_type = text_v2
+  instance_identifier = f44fa2e0-9119-4fc3-a3c1-707f86801496-1706635102050
+  appearance_delay = no_delay
+  appearance_delay_seconds = 1.0
+  fade_in = false
+  fade_in_speed = 1.0
+  anchor_point = mid-centered
+  x = -57
+  y = -140
+  width = 200
+  height = 40
+  stretch_x = false
+  stretch_y = false
+  stay_on_screen = true
+  element_loading_requirement_container_identifier = f72062b4-4dfa-443a-b314-03b91691a44f-1706635102050
+  [loading_requirement_container_meta:f72062b4-4dfa-443a-b314-03b91691a44f-1706635102050] = [groups:][instances:]
+}
+
+element {
+  interactable = true
+  source = Changelog here
+  source_mode = direct
+  shadow = true
+  scale = 1.0
+  base_color = #FFFFFFFF
+  text_border = 2
+  line_spacing = 2
+  enable_scrolling = true
+  auto_line_wrapping = true
+  remove_html_breaks = true
+  code_block_single_color = #737373FF
+  code_block_multi_color = #565656FF
+  headline_line_color = #A9A9A9FF
+  separation_line_color = #A9A9A9FF
+  hyperlink_color = #0771FCFF
+  quote_color = #818181FF
+  quote_indent = 8.0
+  quote_italic = false
+  bullet_list_dot_color = #A9A9A9FF
+  bullet_list_indent = 8.0
+  bullet_list_spacing = 3.0
+  parse_markdown = true
+  element_type = text_v2
+  instance_identifier = 03fb6d90-b378-424d-ae6a-9726ddc5e41c-1706635180341
+  appearance_delay = no_delay
+  appearance_delay_seconds = 1.0
+  fade_in = false
+  fade_in_speed = 1.0
+  anchor_point = mid-centered
+  x = -309
+  y = -104
+  width = 617
+  height = 219
+  stretch_x = false
+  stretch_y = false
+  stay_on_screen = true
+  element_loading_requirement_container_identifier = 7e8652e9-2fbf-40b5-bea0-2175d188cab5-1706635180341
+  [loading_requirement_container_meta:7e8652e9-2fbf-40b5-bea0-2175d188cab5-1706635180341] = [groups:][instances:]
+}
+
+element {
+  button_element_executable_block_identifier = bd200949-4e8b-45b2-95bf-33e68f0716a8-1706635239512
+  [executable_action_instance:2568ab51-e0e5-4c0f-af17-31efaa1449df-1706635296815][action_type:opengui] = title_screen
+  [executable_block:bd200949-4e8b-45b2-95bf-33e68f0716a8-1706635239512][type:generic] = [executables:2568ab51-e0e5-4c0f-af17-31efaa1449df-1706635296815;]
+  restartbackgroundanimations = true
+  loopbackgroundanimations = true
+  label = Go back
+  element_type = custom_button
+  instance_identifier = dfbeb49e-9674-4d41-a6f7-0877a3991eee-1706635239512
+  appearance_delay = no_delay
+  appearance_delay_seconds = 1.0
+  fade_in = false
+  fade_in_speed = 1.0
+  anchor_point = mid-centered
+  x = -54
+  y = 124
+  width = 109
+  height = 27
+  stretch_x = false
+  stretch_y = false
+  stay_on_screen = true
+  element_loading_requirement_container_identifier = 7a8e7171-ebc7-49e0-a922-136bc2a987ce-1706635239512
+  [loading_requirement_container_meta:7a8e7171-ebc7-49e0-a922-136bc2a987ce-1706635239512] = [groups:][instances:]
+}
+

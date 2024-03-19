@@ -1,0 +1,11 @@
+type = slideshow
+
+slideshow-meta {
+   name = main_screen
+   width = 0
+   height = 0
+   x = 0
+   y = 0
+   duration = 5.0
+   fadespeed = 10
+}

@@ -1,0 +1,15 @@
+{
+  "render_style": "CUBE",
+  "init_modules": [
+    "kubejs:firefly_light"
+  ],
+  "update_modules": [],
+  "forces": [
+    "kubejs:force/vector_field/test_vector_field"
+  ],
+  "render_modules": [
+    "kubejs:color/firefly_color"
+  ],
+  "face_velocity": true,
+  "should_collide": false
+}

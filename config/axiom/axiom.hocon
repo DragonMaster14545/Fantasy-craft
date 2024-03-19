@@ -1,0 +1,110 @@
+# Axiom Configuration
+
+blueprint {
+    # Automatically refresh loaded blueprints
+    automaticRefreshing=true
+    # Default tags that are recommended when creating a blueprint
+    defaultTags="small,medium,large,massive,organic,structure,terrain,interior,house,tower,bridge,castle,statue,temple,monument,barn,stable,windmill,store,watermill,ship,airship,balloon,palace,watchtower,mansion,grave,marketplace,mine,obelisk,warehouse,silo,shipwreck,mausoleum,cemetery,bunker,airplane,helicopter,car,truck,vehicle,blacksmith,crypt,factory,mountain,cliff,rock,iceberg,spike,stone,wood,brick,natural,sand,metal,winter,spring,summer,autumn,tree,bush,mushroom,spruce,oak,birch,coniferous,deciduous,acacia,mangrove,cherryblossom,darkoak,jungle,baobab,azalea,cypress,coral,sapling,grass,seagrass,bamboo,flowers,animal,creature,dead,lamp,streetlight,brazier,bed,bookshelf,closet,table,chair,fireplace,carpet,fountain,clock,banner,flag,bell,modern,medieval,steampunk,gothic,oriental,victorian,fantasy,sci-fi,elven,dwarven,futuristic,retro,classic,rustic,baroque,rococo,industrial,artnouveau,artdeco,cyberpunk,space,arabic,indian,egyptian,greek,roman,norse,mesoamerican,japanese,western,spanish,tudor,spooky,pirate,dungeons,rubble,crates,redstone,wall,window,roof,stairs,pillar,arch,stairs,chimney,well"
+}
+# Capabilities modify the way the player moves and interacts with the world
+capabilities {
+    # Place blocks in mid-air
+    angelPlacement=false
+    # Automatically swap to creative when opening the Context Menu
+    autoSwapToCreative=true
+    # Hold down left-click to break blocks very fast
+    bulldozer=true
+    # Place blocks very fast in a controlled manner
+    fastPlace=false
+    flightCameraDirection=false
+    flightMomentum=1
+    # Bypass block placement restrictions
+    forcePlace=false
+    # Removes the reach limit
+    infiniteReach=true
+    infiniteReachLimit=-1
+    # Move through blocks while flying
+    noClip=false
+    # Prevent triggering neighbor updates when placing/breaking
+    noUpdates=false
+    # Right-click blocks to replace them with the held block
+    replaceMode=false
+    # Various useful interactions when right-clicking with your fist
+    tinker=false
+    typeReplace=false
+}
+keybinds {
+    adjustRadius="ctrl+mousemiddle"
+    arcballCamera="ctrl+mouseleft"
+    copy="ctrl+c"
+    crosshairCamera=mouseright
+    cut="ctrl+x"
+    flipPlacement="ctrl+f"
+    invertCameraRotate=false
+    moveBackward=s
+    moveDown=leftshift
+    moveForward=w
+    moveLeft=a
+    moveQuick=leftcontrol
+    moveRight=d
+    moveUp=space
+    panCamera="ctrl+mouseright"
+    paste="ctrl+v"
+    pickBlock=mousemiddle
+    quickFill="ctrl+f"
+    quickReplace="ctrl+r"
+    redo="ctrl+y"
+    rotateCamera=mouseleft
+    rotatePlacement="ctrl+r"
+    saveBlueprint="ctrl+p"
+    showBiomes="ctrl+b"
+    showSelection=none
+    swapLeftRightClickDisplayEntities=false
+    toolKeybinds {
+        "biome_painter"=none
+        "box_select"=b
+        clentaminator=none
+        distort=none
+        elevation=e
+        extrude=y
+        floodfill=none
+        "freehand_draw"=g
+        "freehand_select"=n
+        "gradient_painter"=none
+        "lasso_select"=l
+        "magic_select"=m
+        melt=k
+        "noise_painter"=o
+        painter=p
+        path=none
+        rock=h
+        roughen=none
+        ruler=none
+        "sculpt_draw"=none
+        shape=none
+        shatter=none
+        slope=none
+        smooth=u
+        stamp=none
+        "swap_to_last_tool"=none
+        text=none
+        weld=j
+    }
+    undo="ctrl+z"
+    useTool=mouseright
+    useVanillaMovement=true
+}
+rendering {
+    # Shows keypresses on the screen
+    keypressOverlay=false
+    # Liquid opacity multiplier
+    liquidOpacity=1
+    # Minimum brightness level. 0.0 = default, 1.0 = fullbright
+    minBrightness=0
+    # Shows gizmos for display entities, allowing you to modify them
+    showDisplayEntities=true
+    # Shows hints in the bottom right corner of the screen
+    showKeyHints=true
+    # Shows gizmos for marker entities, allowing you to modify them
+    showMarkerEntities=true
+}

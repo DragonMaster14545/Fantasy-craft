@@ -1,0 +1,11 @@
+{
+  "max_lifetime": 20,
+  "loop": false,
+  "rate": 2,
+  "count": 1,
+  "emitter_settings": {
+    "shape": "kubejs:rocket",
+    "particle_settings": "kubejs:rocket"
+  },
+  "particle_data": "kubejs:rocket"
+}

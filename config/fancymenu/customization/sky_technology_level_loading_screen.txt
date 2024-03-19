@@ -1,0 +1,92 @@
+type = fancymenu_layout
+
+layout-meta {
+  identifier = level_loading_screen
+  render_custom_elements_behind_vanilla = false
+  last_edited_time = 1706611209093
+  is_enabled = true
+  randommode = false
+  randomgroup = 1
+  randomonlyfirsttime = false
+  layout_index = 0
+  [loading_requirement_container_meta:a0e04cd1-908b-4874-978b-e2fafb4f294b-1706611193364] = [groups:][instances:]
+}
+
+customization {
+  action = setscale
+  scale = 3.0
+}
+
+customization {
+  action = autoscale
+  basewidth = 1920
+  baseheight = 991
+}
+
+menu_background {
+  slideshow_name = main_screen
+  background_type = slideshow
+}
+
+customization {
+  action = backgroundoptions
+  keepaspectratio = false
+}
+
+scroll_list_customization {
+  preserve_scroll_list_header_footer_aspect_ratio = true
+  render_scroll_list_header_shadow = true
+  render_scroll_list_footer_shadow = true
+  show_scroll_list_header_footer_preview_in_editor = false
+}
+
+vanilla_button {
+  button_element_executable_block_identifier = 3a3f097a-02c6-4ea3-9f47-e8490021810f-1706610232086
+  [executable_block:3a3f097a-02c6-4ea3-9f47-e8490021810f-1706610232086][type:generic] = [executables:]
+  restartbackgroundanimations = true
+  loopbackgroundanimations = true
+  element_type = vanilla_button
+  instance_identifier = percentage
+  appearance_delay = no_delay
+  appearance_delay_seconds = 1.0
+  fade_in = false
+  fade_in_speed = 1.0
+  anchor_point = vanilla
+  x = 220
+  y = 131
+  width = 200
+  height = 9
+  stretch_x = false
+  stretch_y = false
+  stay_on_screen = true
+  element_loading_requirement_container_identifier = d36ca7bc-ae7d-49cd-89a7-edc572e2f138-1706610232086
+  [loading_requirement_container_meta:d36ca7bc-ae7d-49cd-89a7-edc572e2f138-1706610232086] = [groups:][instances:]
+  is_hidden = false
+  automated_button_clicks = 0
+}
+
+vanilla_button {
+  button_element_executable_block_identifier = 77a6f8e9-1ea9-4bc2-91b8-61edd6cd2617-1706610232086
+  [executable_block:77a6f8e9-1ea9-4bc2-91b8-61edd6cd2617-1706610232086][type:generic] = [executables:]
+  restartbackgroundanimations = true
+  loopbackgroundanimations = true
+  element_type = vanilla_button
+  instance_identifier = chunks
+  appearance_delay = no_delay
+  appearance_delay_seconds = 1.0
+  fade_in = false
+  fade_in_speed = 1.0
+  anchor_point = vanilla
+  x = 270
+  y = 145
+  width = 100
+  height = 100
+  stretch_x = false
+  stretch_y = false
+  stay_on_screen = true
+  element_loading_requirement_container_identifier = b0ea50eb-6825-4144-8fbe-114fc67d8958-1706610232086
+  [loading_requirement_container_meta:b0ea50eb-6825-4144-8fbe-114fc67d8958-1706610232086] = [groups:][instances:]
+  is_hidden = false
+  automated_button_clicks = 0
+}
+

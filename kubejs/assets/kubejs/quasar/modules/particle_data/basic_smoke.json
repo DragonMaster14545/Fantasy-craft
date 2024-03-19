@@ -1,0 +1,22 @@
+{
+  "render_style": "BILLBOARD",
+  "init_modules": [
+    "kubejs:block_vel",
+    "kubejs:ember_light"
+  ],
+  "update_modules": [
+    "kubejs:collision/spark_bounce"
+  ],
+  "collision_modules": [
+  ],
+  "forces": [
+    "kubejs:force/vector_field/test_vector_field",
+    "kubejs:force/drag/test_drag",
+    "kubejs:force/gravity/test_gravity"
+  ],
+  "render_modules": [
+  ],
+  "face_velocity": true,
+  "velocity_stretch_factor": 1.0,
+  "should_collide": false
+}

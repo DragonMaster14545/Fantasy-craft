@@ -1,0 +1,18 @@
+{
+  "init_modules": [
+    "kubejs:swiftshot_shrapnel_velocity"
+  ],
+  "update_modules": [],
+  "collision_modules": [
+  ],
+  "forces": [
+    "kubejs:force/drag/shrapnel_drag",
+    "kubejs:force/gravity/shrapnel_gravity"
+  ],
+  "render_modules": [
+    "kubejs:color/swiftshot_color"
+  ],
+  "face_velocity": true,
+  "velocity_stretch_factor": 0.0,
+  "should_collide": true
+}

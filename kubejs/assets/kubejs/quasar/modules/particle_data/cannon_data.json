@@ -1,0 +1,27 @@
+{
+  "sprite_data": {
+    "sprite": "minecraft:textures/block/iron_block.png"
+  },
+  "render_style": "CUBE",
+  "init_modules": [
+    "kubejs:cannon_velocity",
+    "kubejs:smoke_big_init",
+    "kubejs:smoke_small_init"
+  ],
+  "update_modules": [
+    "kubejs:basic_smoke_tick_sub"
+  ],
+  "collision_modules": [
+  ],
+  "forces": [
+    "kubejs:force/drag/shrapnel_drag",
+    "kubejs:force/gravity/shrapnel_gravity",
+    "kubejs:force/vector_field/test_vector_field"
+  ],
+  "render_modules": [
+    "kubejs:color/swiftshot_color"
+  ],
+  "face_velocity": true,
+  "velocity_stretch_factor": 0.0,
+  "should_collide": true
+}

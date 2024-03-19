@@ -1,0 +1,92 @@
+type = fancymenu_layout
+
+layout-meta {
+  identifier = progress_screen
+  render_custom_elements_behind_vanilla = false
+  last_edited_time = 1706611258447
+  is_enabled = true
+  randommode = false
+  randomgroup = 1
+  randomonlyfirsttime = false
+  layout_index = 0
+  [loading_requirement_container_meta:6cec9fb0-7133-40bb-9e0e-842c727f50ff-1706611246217] = [groups:][instances:]
+}
+
+customization {
+  action = setscale
+  scale = 3.0
+}
+
+customization {
+  action = autoscale
+  basewidth = 1920
+  baseheight = 991
+}
+
+menu_background {
+  slideshow_name = main_screen
+  background_type = slideshow
+}
+
+customization {
+  action = backgroundoptions
+  keepaspectratio = false
+}
+
+scroll_list_customization {
+  preserve_scroll_list_header_footer_aspect_ratio = true
+  render_scroll_list_header_shadow = true
+  render_scroll_list_footer_shadow = true
+  show_scroll_list_header_footer_preview_in_editor = false
+}
+
+vanilla_button {
+  button_element_executable_block_identifier = 95752a22-bcab-4889-b791-fd99c4428677-1706610470941
+  [executable_block:95752a22-bcab-4889-b791-fd99c4428677-1706610470941][type:generic] = [executables:]
+  restartbackgroundanimations = true
+  loopbackgroundanimations = true
+  element_type = vanilla_button
+  instance_identifier = stage
+  appearance_delay = no_delay
+  appearance_delay_seconds = 1.0
+  fade_in = false
+  fade_in_speed = 1.0
+  anchor_point = vanilla
+  x = 70
+  y = 90
+  width = 500
+  height = 9
+  stretch_x = false
+  stretch_y = false
+  stay_on_screen = true
+  element_loading_requirement_container_identifier = 628eacef-ae8b-423c-88d3-ac02e9ccf474-1706610470941
+  [loading_requirement_container_meta:628eacef-ae8b-423c-88d3-ac02e9ccf474-1706610470941] = [groups:][instances:]
+  is_hidden = false
+  automated_button_clicks = 0
+}
+
+vanilla_button {
+  button_element_executable_block_identifier = d688e198-7409-43f6-b27c-09921ab9e4ff-1706610470941
+  [executable_block:d688e198-7409-43f6-b27c-09921ab9e4ff-1706610470941][type:generic] = [executables:]
+  restartbackgroundanimations = true
+  loopbackgroundanimations = true
+  element_type = vanilla_button
+  instance_identifier = header
+  appearance_delay = no_delay
+  appearance_delay_seconds = 1.0
+  fade_in = false
+  fade_in_speed = 1.0
+  anchor_point = vanilla
+  x = 70
+  y = 70
+  width = 500
+  height = 9
+  stretch_x = false
+  stretch_y = false
+  stay_on_screen = true
+  element_loading_requirement_container_identifier = 7a6a092f-8b12-48a7-abcc-693e0e1479fb-1706610470941
+  [loading_requirement_container_meta:7a6a092f-8b12-48a7-abcc-693e0e1479fb-1706610470941] = [groups:][instances:]
+  is_hidden = false
+  automated_button_clicks = 0
+}
+

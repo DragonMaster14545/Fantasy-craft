@@ -1,0 +1,11 @@
+{
+  "max_lifetime": 40,
+  "loop": false,
+  "rate": 1,
+  "count": 16,
+  "emitter_settings": {
+    "shape": "kubejs:basic_smoke",
+    "particle_settings": "kubejs:basic_smoke"
+  },
+  "particle_data": "kubejs:basic_smoke"
+}

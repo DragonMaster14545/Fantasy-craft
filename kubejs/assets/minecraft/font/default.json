@@ -1,0 +1,529 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune1.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE000"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune2.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE001"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune3.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE002"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune4.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE003"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune5.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE004"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune6.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE005"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune7.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE006"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune8.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE007"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune9.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE008"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune10.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE009"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune11.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE010"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune12.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE011"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune13.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE012"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune14.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE013"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune15.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE014"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune16.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE015"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune17.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE016"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune18.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE017"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune19.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE018"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune20.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE019"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune21.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE020"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune22.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE021"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune23.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE022"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune24.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE023"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rune25.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE024"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/coin.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE025"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/diamond.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE026"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/crystal.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE027"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/shard.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE028"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/magic_crystal.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE029"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/transmutation_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE030"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/gravity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE031"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/time_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE032"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/illusion_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE033"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/steel_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE034"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/psycic_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE035"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/poison_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE036"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/ghost_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE037"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/dragon_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE038"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/necromancy_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE039"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/void_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE040"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/celestial_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE041"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/summoning_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE042"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/light_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE043"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/dark_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE044"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/nature_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE045"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/ice_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE046"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/lightning_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE047"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/water_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE048"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/fire_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE049"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/air_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE050"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/earth_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE051"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/neutral_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE052"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/defense_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE053"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/bug_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE054"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/fairy_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE055"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/ground_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE056"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/flying_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE057"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/enchantment_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE058"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/common_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE059"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/uncommon_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE060"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/rare_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE061"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/super_rare_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE062"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/epic_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE063"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/supreme_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE064"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/legendary_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE065"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/exotic_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE066"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/mythic_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE067"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/godly_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE068"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/eternal_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE069"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/divine_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE070"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/celestial_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE071"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/cosmic_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE072"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/eldritch_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE073"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/infinity_rarity_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE074"]
+    }
+  ]
+}
