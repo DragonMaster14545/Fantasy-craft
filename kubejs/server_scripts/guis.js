@@ -15,7 +15,7 @@ let rpgMainMenuGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.darkAqua('Rpg main menu')), 4, gui => {
         gui.playerSlots = false
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
-        let mainQuestProgress = playerSaveData.mainQuestProgress
+        let mainQuestProgress = playerSaveData.rifts[player.persistentData.activeRift].mainQuestProgress
         gui.slot(0, 0, slot => {
             slot.item = Item.of('minecraft:book').withName(Text.of(Text.darkAqua('Player stats')))
             slot.leftClicked = e => rpgStatsGui(event, player, 0)
@@ -36,24 +36,24 @@ let rpgMainMenuGui = (event, player, page) => {
             slot.item = Item.of('minecraft:gold_ingot').withName(Text.of(Text.darkAqua('Achivements')))
             slot.leftClicked = e => rpgAchivementOverviewGui(event, player, 0)
         })
-        if(playerSaveData.teleportationPoints.unlocked == true) {
+        if(playerSaveData.rifts[player.persistentData.activeRift].teleportationPoints.unlocked == true) {
             gui.slot(5, 0, slot => {
                 slot.item = Item.of('minecraft:ender_pearl').withName(Text.of(Text.darkPurple('Teleportation points')))
                 slot.leftClicked = e => rpgTeleportationPointsGui(event, player, 0)
             })
         }
-        if(mainQuestProgress >= 1) {
+        //if(mainQuestProgress >= 1) {
             gui.slot(6, 0, slot => {
                 slot.item = Item.of('minecraft:chest').withName(Text.of(Text.darkAqua('Shop')))
                 slot.leftClicked = e => rpgShopGui(event, player, 0)
             })
-        }
-        if(mainQuestProgress >= 5) {
+        //}
+        //if(mainQuestProgress >= 5) {
             gui.slot(7, 0, slot => {
                 slot.item = Item.of('minecraft:smithing_table').withName(Text.of(Text.darkAqua('Item modification')))
                 slot.leftClicked = e => rpgItemModificationGui(event, player, 0)
             })
-        }
+        //}
         gui.slot(0, 3, slot => {
             slot.item = Item.of('minecraft:netherite_ingot').withName(Text.of(Text.red('Operator menu')))
             slot.leftClicked = e => rpgOperatorGui(event, player, 0)
@@ -69,12 +69,12 @@ let rpgTeleportationPointsGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.darkPurple('Teleportation points')), 6, gui => {
         gui.playerSlots = false
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
-        let playerTeleportationPoints = playerSaveData.teleportationPoints
+        let playerTeleportationPoints = playerSaveData.rifts[player.persistentData.activeRift].teleportationPoints
         let slotX = 0
         let slotY = 0
-        for(let key in teleportationPoints) {
+        for(let key in teleportationPoints[player.persistentData.activeRift]) {
             let playerTeleportationPoint = playerTeleportationPoints[key]
-            let dataTeleportationPoint = teleportationPoints[key]
+            let dataTeleportationPoint = teleportationPoints[player.persistentData.activeRift][key]
             if(playerTeleportationPoint.unlocked == true) {
                let icon = Item.of(dataTeleportationPoint.icon).withName(getColoredText(dataTeleportationPoint.name))
                let savedKey = key
@@ -107,12 +107,12 @@ let rpgAchivementOverviewGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.darkAqua('Achivements overview')), 6, gui => {
         gui.playerSlots = false
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
-        let playerAchivements = playerSaveData.achivements
+        let playerAchivements = playerSaveData.rifts[player.persistentData.activeRift].achivements
         let slotX = 0
         let slotY = 0
-        for(let key in achivements) {
+        for(let key in achivements[player.persistentData.activeRift]) {
             let playerAchivement = playerAchivements[key]
-            let dataAchivement = achivements[key]
+            let dataAchivement = achivements[player.persistentData.activeRift][key]
             let icon
             if(playerAchivement.completed == true) {
                icon = Item.of(dataAchivement.iconCompleted)
@@ -148,9 +148,9 @@ let rpgAchivementOverviewGui = (event, player, page) => {
  */
 let rpgAchivementDetailsGui = (event, player, page,key) => {
     let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
-    let playerAchivementData = playerSaveData.achivements
+    let playerAchivementData = playerSaveData.rifts[player.persistentData.activeRift].achivements
     let playerAchivement = playerAchivementData[key]
-    let dataAchivement = achivements[key]
+    let dataAchivement = achivements[player.persistentData.activeRift][key]
     let playerAchivements = playerAchivement.achivements
     let dataAchivements = dataAchivement.achivements
     player.openChestGUI(getColoredText({text:dataAchivement.name.text+' achivements overview',color:dataAchivement.name.color}), 6, gui => {
@@ -187,10 +187,10 @@ let rpgClassOverviewGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.darkAqua('Classes overview')), 6, gui => {
         gui.playerSlots = false
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
-        let playerClasses = playerSaveData.classes
-        let playerCurrencies = playerSaveData.currencies
-        for(let key in classes) {
-            let activeClass = classes[key]
+        let playerClasses = playerSaveData.rifts[player.persistentData.activeRift].classes
+        let playerCurrencies = playerSaveData.rifts[player.persistentData.activeRift].currencies
+        for(let key in classes[player.persistentData.activeRift]) {
+            let activeClass = classes[player.persistentData.activeRift][key]
             let activePlayerClass = playerClasses[key]
             if(activeClass.y - page >= 0) {
                 let icon
@@ -261,9 +261,9 @@ let rpgClassDetailsGui = (event, player, page, classKey) => {
     player.openChestGUI(getColoredText({text:'Class '+classes[classKey].name.text+' details',color:classes[classKey].name.color}), 6, gui => {
         gui.playerSlots = false
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
-        let playerCurrencies = playerSaveData.currencies
-        let activePlayerClass = playerSaveData.classes[classKey]
-        let activeClass = classes[classKey]
+        let playerCurrencies = playerSaveData.rifts[player.persistentData.activeRift].currencies
+        let activePlayerClass = playerSaveData.rifts[player.persistentData.activeRift].classes[classKey]
+        let activeClass = classes[player.persistentData.activeRift][classKey]
         let skills = activeClass.skills
         for(let key in skills) {
             let activeSkill = skills[key]
@@ -367,13 +367,13 @@ let rpgLevelsMenuGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.darkAqua('Levels overview')), 6, gui => {
         gui.playerSlots = false
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
-        let playerLevelData = playerSaveData.levels
+        let playerLevelData = playerSaveData.rifts[player.persistentData.activeRift].levels
         let drawX = 0
         let drawY = 0
         for (let key in playerLevelData) {
             let playerLevel = playerLevelData[key]
             let dataLevel = levels[key]
-            if (playerSaveData.mainQuestProgress >= dataLevel.mainQuestReqired) {
+            if (playerSaveData.rifts[player.persistentData.activeRift].mainQuestProgress >= dataLevel.mainQuestReqired) {
                 gui.slot(drawX, drawY, slot => {
                     playerLevel.key = key
                     let icon = Item.of(dataLevel.icon).withName(getColoredText(dataLevel.name))
@@ -407,7 +407,7 @@ let rpgLevelsMenuGui = (event, player, page) => {
  */
 let rpgLevelDetailsGui = (event, player, page, key) => {
     let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
-    let playerLevelData = playerSaveData.levels
+    let playerLevelData = playerSaveData.rifts[player.persistentData.activeRift].levels
     let playerLevel = playerLevelData[key]
     let dataLevel = levels[key]
     player.openChestGUI(getColoredText({ text: dataLevel.name.text + ' level details', color: dataLevel.name.color }), 6, gui => {
@@ -514,8 +514,8 @@ let rpgShopGui = (event, player, page) => {
             let slotX = 0
             let slotY = 0
             let offerIndex = 0
-            shopOffers.items.forEach(offer => {
-                createShopButton(event, player, gui, 'item', shopOffers.items, offerIndex, slotX, slotY)
+            shopOffers[player.persistentData.activeRift].items.forEach(offer => {
+                createShopButton(event, player, gui, 'item', shopOffers[player.persistentData.activeRift].items, offerIndex, slotX, slotY)
                 offerIndex += 1
                 slotX += 1
                 if (slotX >= 9) {
@@ -556,8 +556,8 @@ let rpgShopGui = (event, player, page) => {
  */
 function createShopButton(event, player, gui, buttonType, offers, index, x, y) {
     let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
-    let playerShopData = playerSaveData.shopData
-    let playerCurrencies = playerSaveData.currencies
+    let playerShopData = playerSaveData.rifts[player.persistentData.activeRift].shopData
+    let playerCurrencies = playerSaveData.rifts[player.persistentData.activeRift].currencies
     let offer = offers[index]
     if (buttonType == 'item') {
         if (offer.type == 'basic') {
@@ -653,22 +653,22 @@ let rpgStatsGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.darkAqua('Stats overview')), 6, gui => {
         gui.playerSlots = false
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
-        let playerStats = playerSaveData.stats
+        let playerStats = playerSaveData.rifts[player.persistentData.activeRift].stats
         let icon1 = Item.of('minecraft:emerald').withName(Text.of(Text.green('Currencies:')))
         let icon2 = Item.of('minecraft:diamond').withName(Text.of(Text.aqua('Skill points:')))
         for (let key in currencies) {
             let activeCurrency = currencies[key]
             let add = true
             if (activeCurrency.requirementType == 'storyProgress') {
-                if (playerSaveData.mainQuestProgress < activeCurrency.requirementAmount) {
+                if (playerSaveData.rifts[player.persistentData.activeRift].mainQuestProgress < activeCurrency.requirementAmount) {
                     add = false
                 }
             }
             if (add == true) {
                 if (activeCurrency.type == 'currency') {
-                    icon1 = icon1.withLore(getColoredText({ text: activeCurrency.name.text + ': ', color: activeCurrency.name.color }).append(Text.aqua(formatBigDecimal(BigDecimal(playerSaveData.currencies[key])))))
+                    icon1 = icon1.withLore(getColoredText({ text: activeCurrency.name.text + ': ', color: activeCurrency.name.color }).append(Text.aqua(formatBigDecimal(BigDecimal(playerSaveData.rifts[player.persistentData.activeRift].currencies[key])))))
                 } else if (activeCurrency.type == 'skillPoint') {
-                    icon2 = icon2.withLore(getColoredText({ text: activeCurrency.name.text + ': ', color: activeCurrency.name.color }).append(Text.aqua(formatBigDecimal(BigDecimal(playerSaveData.currencies[key])))))
+                    icon2 = icon2.withLore(getColoredText({ text: activeCurrency.name.text + ': ', color: activeCurrency.name.color }).append(Text.aqua(formatBigDecimal(BigDecimal(playerSaveData.rifts[player.persistentData.activeRift].currencies[key])))))
                 }
             }
         }
@@ -709,7 +709,7 @@ let rpgStatsGui = (event, player, page) => {
  * @param {Internal.NetworkEventJS} event
  */
 let rpgQuestMenuGui = (event, player, page) => {
-    let quests = event.server.persistentData.playerData[player.stringUuid].quests
+    let quests = event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].quests
     player.openChestGUI(Text.of(Text.darkAqua('Quest overview')), 6, gui => {
         gui.playerSlots = false
         gui.slot(8, 5, slot => {
@@ -740,7 +740,7 @@ let rpgQuestMenuGui = (event, player, page) => {
  * @param {Internal.NetworkEventJS} event
  */
 let rpgQuestDetailsMenu = (event, player, page, questIndex) => {
-    let quests = event.server.persistentData.playerData[player.stringUuid].quests
+    let quests = event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].quests
     let quest = quests[questIndex]
     player.openChestGUI(getColoredText(quest.name), 3, gui => {
         gui.playerSlots = false
@@ -859,7 +859,7 @@ let selectPlayerGui = (event, player, page, usecase) => {
                 slot.item = Item.playerHead(player.username).withName(Text.aqua(player.username))
                 slot.leftClicked = e => {
                     if (usecase == 'reset_player_quests') {
-                        event.server.persistentData.playerData[selectedPlayer.stringUuid].quests = testQuests
+                        event.server.persistentData.playerData[selectedPlayer.stringUuid].rifts[player.persistentData.activeRift].quests = testQuests
                         rpgOperatorGui(event, player, 0)
                     } else if (usecase == 'open_test_dialogue') {
                         rpgDialogueGui(event, selectedPlayer, 0, Object.assign({}, testChatData), false)
@@ -867,7 +867,7 @@ let selectPlayerGui = (event, player, page, usecase) => {
                         selectedPlayer.persistentData.initiated = false
                         setUpPlayer(event, selectedPlayer)
                     } else if (usecase == 'give_coins') {
-                        event.server.persistentData.playerData[player.stringUuid].currencies.coins = BigDecimal(event.server.persistentData.playerData[player.stringUuid].currencies.coins).add(BigDecimal(1000))
+                        event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].currencies.coins = BigDecimal(event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].currencies.coins).add(BigDecimal(1000))
                         rpgOperatorGui(event, player, 0)
                     } else if (usecase == 'get_server_time') {
                         sendTimeToPlayer(event, player)
@@ -878,8 +878,8 @@ let selectPlayerGui = (event, player, page, usecase) => {
                     } else if (usecase == 'test_cutscene') {
                         startCutscene(event, player, 'test1')
                     } else if (usecase == 'give_skill_points') {
-                        event.server.persistentData.playerData[player.stringUuid].currencies.skill_points = BigDecimal(event.server.persistentData.playerData[player.stringUuid].currencies.skill_points).add(BigDecimal(10))
-                        event.server.persistentData.playerData[player.stringUuid].currencies.evolution_points = BigDecimal(event.server.persistentData.playerData[player.stringUuid].currencies.evolution_points).add(BigDecimal(10))
+                        event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].currencies.skill_points = BigDecimal(event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].currencies.skill_points).add(BigDecimal(10))
+                        event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].currencies.evolution_points = BigDecimal(event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].currencies.evolution_points).add(BigDecimal(10))
                         rpgOperatorGui(event, player, 0)
                     }
                 }
@@ -950,7 +950,7 @@ let rpgDialogueGui = (event, player, page, chatData, isCutscene) => {
 let rpgChooseDialogueGui = (event, player, page, dialogueOptions, npcName) => {
     player.openChestGUI(npcName, 2, gui => {
         gui.playerSlots = false
-        let quests = event.server.persistentData.playerData[player.stringUuid].quests
+        let quests = event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].quests
         gui.slot(0, 0, slot => {
             slot.item = Item.of('minecraft:paper').withName(Text.aqua('What do you want to talk about?'))
         })
@@ -990,7 +990,7 @@ let rpgChooseDialogueGui = (event, player, page, dialogueOptions, npcName) => {
     })
 }
 function openQuestDialogue(e, player, questIndex) {
-    let quests = e.server.persistentData.playerData[player.stringUuid].quests
+    let quests = e.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].quests
     let quest = quests[questIndex]
     let activeStep = quest.steps[quest.progress]
     rpgDialogueGui(e, player, 0, Object.assign({}, activeStep.task.dialogue), false)
@@ -1017,17 +1017,17 @@ function questGiveReward(e, player, reward) {
         player.give(Item.of(reward.id, reward.amount))
     } else if (reward.type == 'currency') {
         let playerData = e.server.persistentData.playerData[player.stringUuid]
-        playerData.currencies[reward.id] = BigDecimal(`${playerData.currencies[reward.id]}`).add(BigDecimal(BigDecimal(`${reward.amount}`)))
+        playerData.rifts[player.persistentData.activeRift].currencies[reward.id] = BigDecimal(`${playerData.rifts[player.persistentData.activeRift].currencies[reward.id]}`).add(BigDecimal(BigDecimal(`${reward.amount}`)))
     } else if (reward.type == 'teleportation_point') {
         let playerData = e.server.persistentData.playerData[player.stringUuid]
-        playerData.teleportationPoints[reward.id].unlocked = true
-        playerData.teleportationPoints.unlocked = true
+        playerData.rifts[player.persistentData.activeRift].teleportationPoints[reward.id].unlocked = true
+        playerData.rifts[player.persistentData.activeRift].teleportationPoints.unlocked = true
     } else if (reward.type == 'side_quest_completed') {
         let playerData = e.server.persistentData.playerData[player.stringUuid]
-        playerData.sideQuestProgress.push(reward.value)
+        playerData.rifts[player.persistentData.activeRift].sideQuestProgress.push(reward.value)
     } else if (reward.type == 'story_quest_progress') {
         let playerData = e.server.persistentData.playerData[player.stringUuid]
-        playerData.mainQuestProgress = reward.value
+        playerData.rifts[player.persistentData.activeRift].mainQuestProgress = reward.value
     }
 }
 function questFormateReward(icon, reward) {
@@ -1050,7 +1050,7 @@ function rpgDialogueAnswerSelection(event, player, chatData, answerIndex, isCuts
         chatData.activeSentence = activeAnswer.sentence
         rpgDialogueGui(event, player, 0, chatData, isCutscene)
     } else if (activeAnswer.result == 'giveQuest') {
-        let quests = event.server.persistentData.playerData[player.stringUuid].quests
+        let quests = event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].quests
         quests.push(activeAnswer.quest)
         if (activeAnswer.mode == 'close') {
             return true
@@ -1059,7 +1059,7 @@ function rpgDialogueAnswerSelection(event, player, chatData, answerIndex, isCuts
             rpgDialogueGui(event, player, 0, chatData, isCutscene)
         }
     } else if (activeAnswer.result == 'giveQuestId') {
-        let quests = event.server.persistentData.playerData[player.stringUuid].quests
+        let quests = event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].quests
         quests.push(quests[activeAnswer.questId])
         if (activeAnswer.mode == 'close') {
             return true
@@ -1145,7 +1145,7 @@ function questFormateStepType(e, player, step, icon) {
     } else if (step.task.type == 'reach_level') {
         let playerSaveData = e.server.persistentData.playerData[player.stringUuid]
         icon = icon.withLore(Text.of(Text.red('Reach ' + levels[step.task.id].name.text + ' level ' + step.task.amount)))
-        icon = icon.withLore(Text.of(Text.blue(levels[step.task.id].name.text.charAt(0).toUpperCase() + levels[step.task.id].name.text.slice(1) + ' level: ' + playerSaveData.levels[step.task.id].level + ' / ' + step.task.amount)))
+        icon = icon.withLore(Text.of(Text.blue(levels[step.task.id].name.text.charAt(0).toUpperCase() + levels[step.task.id].name.text.slice(1) + ' level: ' + playerSaveData.rifts[player.persistentData.activeRift].levels[step.task.id].level + ' / ' + step.task.amount)))
     }
     return icon
 }

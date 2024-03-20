@@ -272,7 +272,7 @@ function calculateTypeDamageMultiplier(attackerTypes,attackedTypes) {
 }
 function getBonus(e,player,type,bonusCategory,amount) {
     let playerData = e.server.persistentData.playerData[player.stringUuid]
-    let playerStats = playerData.stats
+    let playerStats = playerData.rifts[player.persistentData.activeRift].stats
     let bonuses = {}
     for(let key in playerStats) {
         if(bonuses[key]) {

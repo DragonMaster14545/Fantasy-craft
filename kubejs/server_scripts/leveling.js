@@ -1,6 +1,6 @@
 function giveXp(e,player,amount,statName) {
     let playerSaveData = e.server.persistentData.playerData[player.stringUuid]
-    let playerLevelData = playerSaveData.levels
+    let playerLevelData = playerSaveData.rifts[player.persistentData.activeRift].levels
     let playerLevel = playerLevelData[statName]
     let dataLevel = levels[statName]
     let xp = BigDecimal(playerLevel.xp).add(BigDecimal(amount))
@@ -10,7 +10,7 @@ function giveXp(e,player,amount,statName) {
         playerLevel.maxXp = BigDecimal(10).multiply(BigDecimal(dataLevel.costMultiplier).pow(playerLevel.level))
         player.notify(Text.aqua('Level up'),getColoredText({text:dataLevel.name.text+' level '+playerLevel.level,color:dataLevel.name.color}))
         if(dataLevel.milestones) {
-            let playerStats = playerSaveData.stats
+            let playerStats = playerSaveData.rifts[player.persistentData.activeRift].stats
             for(let i = 0;i<dataLevel.milestones.length;i++) {
                 let playerMilestone = playerLevel.milestones[i]
                 let dataMilestone = dataLevel.milestones[i]
@@ -32,7 +32,7 @@ function giveXp(e,player,amount,statName) {
 }
 function claimMilestoneReward(e,player,dataMilestone) {
     let playerSaveData = e.server.persistentData.playerData[player.stringUuid]
-    let playerStats = playerSaveData.stats
+    let playerStats = playerSaveData.rifts[player.persistentData.activeRift].stats
     if(dataMilestone.type == 'stat') {
         if(playerStats[dataMilestone.id]) {
             playerStats[dataMilestone.id].amount += dataMilestone.amount
@@ -43,7 +43,7 @@ function claimMilestoneReward(e,player,dataMilestone) {
     } else if(dataMilestone.type == 'text') {
         player.notify(Text.aqua(dataMilestone.name),getColoredText(dataMilestone.description[0]))
     } else if(dataMilestone.type == 'currency') {
-        playerSaveData.currencies[dataMilestone.id] = BigDecimal(playerSaveData.currencies[dataMilestone.id]).add(BigDecimal(dataMilestone.amount))
+        playerSaveData.rifts[player.persistentData.activeRift].currencies[dataMilestone.id] = BigDecimal(playerSaveData.rifts[player.persistentData.activeRift].currencies[dataMilestone.id]).add(BigDecimal(dataMilestone.amount))
     } 
 }
 function giveArmorXp(e,player,amount) {

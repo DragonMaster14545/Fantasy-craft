@@ -210,12 +210,14 @@ let currencies = {
 
 
 let shopOffers = {
-    items:[
-        {currency:'coins',price:5,id:'minecraft:stone',amount:3,name:{text:'Stone',color:0x550000},tooltip:[{text:'Test',color:0x550000},{text:'Test',color:0x550000}],type:'basic'},
-        {currency:'coins',price:2,id:'minecraft:stone',amount:1,name:{text:'Stone',color:0x550000},tooltip:[{text:'Test',color:0x550000},{text:'Test',color:0x550000}],type:'restocking',stock:2,timer:1,unit:'m'},
-        {currency:'coins',price:1,id:'minecraft:stone',amount:32,name:{text:'Stone',color:0x550000},tooltip:[{text:'Test',color:0x550000},{text:'Test',color:0x550000}],type:'limited_stock',stock:5}
-    ],
-    upgrades:[]
+    main_timeline1:{
+        items:[
+            {currency:'coins',price:5,id:'minecraft:stone',amount:3,name:{text:'Stone',color:0x550000},tooltip:[{text:'Test',color:0x550000},{text:'Test',color:0x550000}],type:'basic'},
+            {currency:'coins',price:2,id:'minecraft:stone',amount:1,name:{text:'Stone',color:0x550000},tooltip:[{text:'Test',color:0x550000},{text:'Test',color:0x550000}],type:'restocking',stock:2,timer:1,unit:'m'},
+            {currency:'coins',price:1,id:'minecraft:stone',amount:32,name:{text:'Stone',color:0x550000},tooltip:[{text:'Test',color:0x550000},{text:'Test',color:0x550000}],type:'limited_stock',stock:5}
+        ],
+        upgrades:[]
+    }
 }
 
 
@@ -253,38 +255,42 @@ let cutscenes = {
 
 
 let classes = {
-    //Warrior
-    warrior:{x:1,y:0,requirements:[],cost:1,icon:'minecraft:red_concrete',iconOwned:'minecraft:netherite_sword',name:{text:'Warrior',color:0xFF0000},description:[{text:'A class focused on mele weapons',color:0x45fc03}],skills:{
-        damage:{x:1,y:0,requirements:[],cost:1,type:'stat',id:'meleExtraDamage',amount:1,icon:'minecraft:white_concrete',iconOwned:'minecraft:white_concrete'},
-        unlock:{x:1,y:1,requirements:['damage'],cost:3,type:'text',name:{text:'Unlock',color:0x45fc03},description:[{text:'You unlock whatever',color:0x45fc03}],icon:'minecraft:red_concrete',iconOwned:'minecraft:green_concrete'}
-    }},
-    berserker:{x:0,y:1,requirements:['warrior'],cost:3,icon:'minecraft:red_concrete',iconOwned:'minecraft:netherite_axe',name:{text:'Berserker',color:0xFF0000},description:[{text:'An evolution of the warrior, that focuses on raw force',color:0x45fc03}]},
-    knight:{x:1,y:1,requirements:['warrior'],cost:3,icon:'minecraft:red_concrete',iconOwned:'minecraft:netherite_sword',name:{text:'Knight',color:0xFF0000},description:[{text:'An evolution of the warrior, that also uses armor',color:0x45fc03}]},
-    gladiator:{x:2,y:1,requirements:['warrior'],cost:3,icon:'minecraft:red_concrete',iconOwned:'minecraft:shield',name:{text:'Gladiator',color:0xFF0000},description:[{text:'An evolution of the warrior, that focuses on quick movement and attacks',color:0x45fc03}]},
-    //Archer
-    archer:{x:4,y:0,requirements:[],cost:1,icon:'minecraft:green_concrete',iconOwned:'minecraft:bow',name:{text:'Archer',color:0x3e8022},description:[{text:'A class focused on ranged weapons',color:0x45fc03}]},
-    woodWalker:{x:3,y:1,requirements:['archer'],cost:3,icon:'minecraft:green_concrete',iconOwned:'minecraft:oak_sapling',name:{text:'Wood walker',color:0x3e8022},description:[{text:'An evolution of the archer, that lives with the forrest',color:0x45fc03}]},
-    sniper:{x:4,y:1,requirements:['archer'],cost:3,icon:'minecraft:green_concrete',iconOwned:'minecraft:arrow',name:{text:'Sniper',color:0x3e8022},description:[{text:'An evolution of the archer, that focuses on hitting the target',color:0x45fc03}]},
-    hunter:{x:5,y:1,requirements:['archer'],cost:3,icon:'minecraft:green_concrete',iconOwned:'minecraft:bow',name:{text:'Hunter',color:0x3e8022},description:[{text:'An evolution of the archer, that focuses on the use of poisons',color:0x45fc03}]},
-    //Mage
-    mage:{x:7,y:0,requirements:[],cost:1,icon:'minecraft:purple_concrete',iconOwned:'minecraft:amethyst_shard',name:{text:'Mage',color:0x9512c4},description:[{text:'A class focused on using magic',color:0x45fc03}]},
-    elementalist:{x:6,y:1,requirements:['mage'],cost:3,icon:'minecraft:purple_concrete',iconOwned:'minecraft:fire_charge',name:{text:'Elementalist',color:0x9512c4},description:[{text:'An evolution of the mage, that focuses on elemental magic',color:0x45fc03}]},
-    wizard:{x:7,y:1,requirements:['mage'],cost:3,icon:'minecraft:purple_concrete',iconOwned:'minecraft:diamond',name:{text:'Wizard',color:0x9512c4},description:[{text:'An evolution of the mage, that focuses on deppening its knowlege of magic',color:0x45fc03}]},
-    summoner:{x:8,y:1,requirements:['mage'],cost:3,icon:'minecraft:purple_concrete',iconOwned:'minecraft:skeleton_skull',name:{text:'Summoner',color:0x9512c4},description:[{text:'An evolution of the mage, that focuses on summoning allys',color:0x45fc03}]}
-}
+    main_timeline1:{
+        //Warrior
+        warrior:{x:1,y:0,requirements:[],cost:1,icon:'minecraft:red_concrete',iconOwned:'minecraft:netherite_sword',name:{text:'Warrior',color:0xFF0000},description:[{text:'A class focused on mele weapons',color:0x45fc03}],skills:{
+            damage:{x:1,y:0,requirements:[],cost:1,type:'stat',id:'meleExtraDamage',amount:1,icon:'minecraft:white_concrete',iconOwned:'minecraft:white_concrete'},
+            unlock:{x:1,y:1,requirements:['damage'],cost:3,type:'text',name:{text:'Unlock',color:0x45fc03},description:[{text:'You unlock whatever',color:0x45fc03}],icon:'minecraft:red_concrete',iconOwned:'minecraft:green_concrete'}
+        }},
+        berserker:{x:0,y:1,requirements:['warrior'],cost:3,icon:'minecraft:red_concrete',iconOwned:'minecraft:netherite_axe',name:{text:'Berserker',color:0xFF0000},description:[{text:'An evolution of the warrior, that focuses on raw force',color:0x45fc03}]},
+        knight:{x:1,y:1,requirements:['warrior'],cost:3,icon:'minecraft:red_concrete',iconOwned:'minecraft:netherite_sword',name:{text:'Knight',color:0xFF0000},description:[{text:'An evolution of the warrior, that also uses armor',color:0x45fc03}]},
+        gladiator:{x:2,y:1,requirements:['warrior'],cost:3,icon:'minecraft:red_concrete',iconOwned:'minecraft:shield',name:{text:'Gladiator',color:0xFF0000},description:[{text:'An evolution of the warrior, that focuses on quick movement and attacks',color:0x45fc03}]},
+        //Archer
+        archer:{x:4,y:0,requirements:[],cost:1,icon:'minecraft:green_concrete',iconOwned:'minecraft:bow',name:{text:'Archer',color:0x3e8022},description:[{text:'A class focused on ranged weapons',color:0x45fc03}]},
+        woodWalker:{x:3,y:1,requirements:['archer'],cost:3,icon:'minecraft:green_concrete',iconOwned:'minecraft:oak_sapling',name:{text:'Wood walker',color:0x3e8022},description:[{text:'An evolution of the archer, that lives with the forrest',color:0x45fc03}]},
+        sniper:{x:4,y:1,requirements:['archer'],cost:3,icon:'minecraft:green_concrete',iconOwned:'minecraft:arrow',name:{text:'Sniper',color:0x3e8022},description:[{text:'An evolution of the archer, that focuses on hitting the target',color:0x45fc03}]},
+        hunter:{x:5,y:1,requirements:['archer'],cost:3,icon:'minecraft:green_concrete',iconOwned:'minecraft:bow',name:{text:'Hunter',color:0x3e8022},description:[{text:'An evolution of the archer, that focuses on the use of poisons',color:0x45fc03}]},
+        //Mage
+        mage:{x:7,y:0,requirements:[],cost:1,icon:'minecraft:purple_concrete',iconOwned:'minecraft:amethyst_shard',name:{text:'Mage',color:0x9512c4},description:[{text:'A class focused on using magic',color:0x45fc03}]},
+        elementalist:{x:6,y:1,requirements:['mage'],cost:3,icon:'minecraft:purple_concrete',iconOwned:'minecraft:fire_charge',name:{text:'Elementalist',color:0x9512c4},description:[{text:'An evolution of the mage, that focuses on elemental magic',color:0x45fc03}]},
+        wizard:{x:7,y:1,requirements:['mage'],cost:3,icon:'minecraft:purple_concrete',iconOwned:'minecraft:diamond',name:{text:'Wizard',color:0x9512c4},description:[{text:'An evolution of the mage, that focuses on deppening its knowlege of magic',color:0x45fc03}]},
+        summoner:{x:8,y:1,requirements:['mage'],cost:3,icon:'minecraft:purple_concrete',iconOwned:'minecraft:skeleton_skull',name:{text:'Summoner',color:0x9512c4},description:[{text:'An evolution of the mage, that focuses on summoning allys',color:0x45fc03}]}
+        }
+    }
 
 
 let achivements = {
-    slayer:{
-        icon:'minecraft:wooden_sword',iconCompleted:'minecraft:iron_sword',name:{text:'Slayer',color:0x9512c4},description:[{text:'Killing enemies',color:0x45fc03}],achivements:[
-            {task:{type:'kill_mobs',amount:5,id:'minecraft:husk',name:'husks'},icon:'minecraft:diamond',iconCompleted:'minecraft:green_concrete',name:{text:'Husks',color:0x39ed07},description:[{text:'test',color:0xed0707}]},
-            {task:{type:'kill_mobs',amount:5,id:'minecraft:zombie',name:'zombies'},icon:'minecraft:diamond',iconCompleted:'minecraft:green_concrete',name:{text:'Zombies',color:0x39ed07},description:[{text:'test',color:0xed0707}]}
-        ]
-    },
-    leveler:{
-        icon:'minecraft:iron_ingot',iconCompleted:'minecraft:diamond',name:{text:'Leveler',color:0x9512c4},description:[{text:'Leveling up',color:0x45fc03}],achivements:[
-            {task:{type:'reach_level',amount:5,id:'lightMeleCombat'},icon:'minecraft:paper',iconCompleted:'minecraft:green_concrete',name:{text:'Light mele combat',color:0x39ed07},description:[{text:'test',color:0xed0707}]}
-        ]
+    main_timeline1:{
+        slayer:{
+            icon:'minecraft:wooden_sword',iconCompleted:'minecraft:iron_sword',name:{text:'Slayer',color:0x9512c4},description:[{text:'Killing enemies',color:0x45fc03}],achivements:[
+                {task:{type:'kill_mobs',amount:5,id:'minecraft:husk',name:'husks'},icon:'minecraft:diamond',iconCompleted:'minecraft:green_concrete',name:{text:'Husks',color:0x39ed07},description:[{text:'test',color:0xed0707}]},
+                {task:{type:'kill_mobs',amount:5,id:'minecraft:zombie',name:'zombies'},icon:'minecraft:diamond',iconCompleted:'minecraft:green_concrete',name:{text:'Zombies',color:0x39ed07},description:[{text:'test',color:0xed0707}]}
+            ]
+        },
+        leveler:{
+            icon:'minecraft:iron_ingot',iconCompleted:'minecraft:diamond',name:{text:'Leveler',color:0x9512c4},description:[{text:'Leveling up',color:0x45fc03}],achivements:[
+                {task:{type:'reach_level',amount:5,id:'lightMeleCombat'},icon:'minecraft:paper',iconCompleted:'minecraft:green_concrete',name:{text:'Light mele combat',color:0x39ed07},description:[{text:'test',color:0xed0707}]}
+            ]
+        }
     }
 }
 
@@ -301,14 +307,21 @@ let spheres = {
 
 
 let teleportationPoints = {
-    spawn:{x:0,y:0,z:0,dim:'fantasy_craft:void_dimension',icon:'minecraft:emerald_block',name:{text:'Spawn',color:0x39ed07}},
-    house:{x:-5,y:0,z:50,dim:'fantasy_craft:void_dimension',icon:'minecraft:oak_planks',name:{text:'House',color:0x39ed07}}
+    main_timeline1:{
+        spawn:{x:0,y:0,z:0,dim:'fantasy_craft:void_dimension',icon:'minecraft:emerald_block',name:{text:'Spawn',color:0x39ed07}},
+        house:{x:-5,y:0,z:50,dim:'fantasy_craft:void_dimension',icon:'minecraft:oak_planks',name:{text:'House',color:0x39ed07}}
+    }
 }
 
 
 let effects = {
     poison:{id:'minecraft:poison',name:{text:'Poison',color:0x39ed07}},
     weakness:{id:'minecraft:weakness',name:{text:'Weakness',color:0x737373}}
+}
+
+
+let rifts = {
+    main_timeline1:{name:{text:'Main',color:0x39ed07}}
 }
 
 

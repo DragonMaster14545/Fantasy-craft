@@ -23,9 +23,9 @@ PlayerEvents.inventoryChanged(e => {
 })
 function testForLevelQuests(e,player) {
     let playerSaveData = e.server.persistentData.playerData[player.stringUuid]
-    let quests = playerSaveData.quests
-    let levels = playerSaveData.levels
-    let playerAchivements = playerSaveData.achivements
+    let quests = playerSaveData.rifts[player.persistentData.activeRift].quests
+    let levels = playerSaveData.rifts[player.persistentData.activeRift].levels
+    let playerAchivements = playerSaveData.rifts[player.persistentData.activeRift].achivements
     quests.forEach(quest => {
         if(!quest.completed) {
         let activeStep = quest.steps[quest.progress]
@@ -35,9 +35,9 @@ function testForLevelQuests(e,player) {
         }
     }
     })
-    for(let key in achivements) {
+    for(let key in achivements[player.persistentData.activeRift]) {
         let playerAchivementCategory = playerAchivements[key]
-        let achivementsCategory = achivements[key]
+        let achivementsCategory = achivements[player.persistentData.activeRift][key]
         if(playerAchivementCategory.completed == false) {
             for(let i = 0;i<achivementsCategory.achivements.length;i++) {
                 if(playerAchivementCategory.achivements[i].completed == false) {
@@ -52,8 +52,8 @@ function testForLevelQuests(e,player) {
 }
 function testForKillQuests(e,player) {
     let playerSaveData = e.server.persistentData.playerData[player.stringUuid]
-    let quests = playerSaveData.quests
-    let playerAchivements = playerSaveData.achivements
+    let quests = playerSaveData.rifts[player.persistentData.activeRift].quests
+    let playerAchivements = playerSaveData.rifts[player.persistentData.activeRift].achivements
     quests.forEach(quest => {
         if(!quest.completed) {
         let activeStep = quest.steps[quest.progress]
@@ -65,9 +65,9 @@ function testForKillQuests(e,player) {
         }
     }
     })
-    for(let key in achivements) {
+    for(let key in achivements[player.persistentData.activeRift]) {
         let playerAchivementCategory = playerAchivements[key]
-        let achivementsCategory = achivements[key]
+        let achivementsCategory = achivements[player.persistentData.activeRift][key]
         if(playerAchivementCategory.completed == false) {
             for(let i = 0;i<achivementsCategory.achivements.length;i++) {
                 if(playerAchivementCategory.achivements[i].completed == false) {
@@ -83,7 +83,7 @@ function testForKillQuests(e,player) {
     }
 }
 function testForItemQuests(e,player) {
-    let quests = e.server.persistentData.playerData[player.stringUuid].quests
+    let quests = e.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].quests
     quests.forEach(quest => {
         if(!quest.completed) {
         let activeStep = quest.steps[quest.progress]
@@ -108,9 +108,9 @@ function questTestForCompletion(e,quest,player) {
 }
 function achivementTestForCompletion(e,player,key,i) {
     let playerSaveData = e.server.persistentData.playerData[player.stringUuid]
-    let playerAchivements = playerSaveData.achivements
+    let playerAchivements = playerSaveData.rifts[player.persistentData.activeRift].achivements
     let playerAchivementCategory = playerAchivements[key]
-    let achivementsCategory = achivements[key]
+    let achivementsCategory = achivements[player.persistentData.activeRift][key]
     let achivementData = achivementsCategory.achivements[i]
     let achivementPlayerData = playerAchivementCategory.achivements[i]
     if(achivementData.task.type == 'kill_mobs' || achivementData.task.type == 'collect_items' || achivementData.task.type == 'talk_to_npc' || achivementData.task.type == 'deliver_items' || achivementData.task.type == 'reach_level') {
@@ -146,9 +146,9 @@ function questRecalculateProgress(e,quest,player){
 }
 function achivementCategoryRecalculateProgress(e,player,key){
     let playerSaveData = e.server.persistentData.playerData[player.stringUuid]
-    let playerAchivements = playerSaveData.achivements
+    let playerAchivements = playerSaveData.rifts[player.persistentData.activeRift].achivements
     let playerAchivementCategory = playerAchivements[key]
-    let achivementsCategory = achivements[key]
+    let achivementsCategory = achivements[player.persistentData.activeRift][key]
     playerAchivementCategory.progress = 0
     playerAchivementCategory.achivements.forEach(achivement => {
         if(achivement.completed == true) {
@@ -161,7 +161,7 @@ function achivementCategoryRecalculateProgress(e,player,key){
     }
 }
 function removeQuests(e,player) {
-    let it = e.server.persistentData.playerData[player.stringUuid].quests.listIterator()
+    let it = e.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].quests.listIterator()
     while(it.hasNext()) {
     let quest = it.next();
     if(quest.contains("remove")) {

@@ -25,7 +25,7 @@ NetworkEvents.dataReceived('rpg_npc_interaction',e => {
 function rpgNpcInteraction(e,player,entity) {
     let npcId = entity.persistentData.npcId
     if(npcId) {
-        let quests = e.server.persistentData.playerData[player.stringUuid].quests
+        let quests = e.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].quests
         let questIndex = 0
         let dialogueOptions = []
         quests.forEach(quest => {
@@ -62,7 +62,7 @@ function rpgNpcInteraction(e,player,entity) {
             if(option.type == 'talk_quest') {
                 openQuestDialogue(e, player, option.questIndex)
             } else if(option.type == 'deliver_quest') {
-                let quests = e.server.persistentData.playerData[player.stringUuid].quests
+                let quests = e.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].quests
                 let quest = quests[option.questIndex]
                 let activeStep = quest.steps[quest.progress]
                 e.server.runCommandSilent(`clear ${player.username} ${activeStep.task.itemId} ${activeStep.task.amount}`)

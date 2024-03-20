@@ -100,59 +100,64 @@ function setUpPlayer(e,player) {
     playerPersistantData.mana = 10
     playerPersistantData.manaRegenCooldown = 0
     playerPersistantData.hpRegenCooldown = 0
-    playerSaveData.quests = []
-    playerSaveData.mainQuestProgress = 0
-    playerSaveData.sideQuestProgress = []
-    playerSaveData.itemRegister = []
-    playerSaveData.shopData = {}
     playerSaveData.itemDetails = {
         nextId: 0
     }
-    playerSaveData.currencies = {}
-    for(let key in currencies) {
-        playerSaveData.currencies[key] = 0
-    }
-    playerSaveData.levels = {}
-    for(let key in levels) {
-        playerSaveData.levels[key] = {level:1,xp:0,maxXp:10}
-        if(levels[key].milestones) {
-            let milestones = []
-            for(let i = 0;i<levels[key].milestones.length;i++) {
-                milestones[i] = {claimed:false}
-            }
-            playerSaveData.levels[key].milestones = milestones
+    for(let riftKey in rifts) {
+        playerSaveData.rifts = {}
+        playerSaveData.rifts[riftKey] = {}
+        let riftPlayerSaveData = playerSaveData.rifts[riftKey]
+        riftPlayerSaveData.quests = []
+        riftPlayerSaveData.mainQuestProgress = 0
+        riftPlayerSaveData.sideQuestProgress = []
+        riftPlayerSaveData.shopData = {}
+        riftPlayerSaveData.currencies = {}
+        for(let key in currencies) {
+            riftPlayerSaveData.currencies[key] = 0
         }
-    }
-    playerSaveData.stats = {}
-    playerSaveData.classes = {}
-    for(let key in classes) {
-        playerSaveData.classes[key] = {owned:false}
-        if(classes[key].skills) {
-            let skills = {}
-            for(let key2 in classes[key].skills) {
-                skills[key2] = {owned:false}
+        riftPlayerSaveData.levels = {}
+        for(let key in levels) {
+            riftPlayerSaveData.levels[key] = {level:1,xp:0,maxXp:10}
+            if(levels[key].milestones) {
+                let milestones = []
+                for(let i = 0;i<levels[key].milestones.length;i++) {
+                    milestones[i] = {claimed:false}
+                }
+                riftPlayerSaveData.levels[key].milestones = milestones
             }
-            playerSaveData.classes[key].skills = skills
         }
-    }
-    playerSaveData.achivements = {}
-    for(let key in achivements) {
-        playerSaveData.achivements[key] = {progress:0,completed:false}
-        if(achivements[key].achivements) {
-            let playerAchivements = []
-            for(let i = 0;i<achivements[key].achivements.length;i++) {
-                playerAchivements[i] = {completed:false,progress:0}
+        riftPlayerSaveData.stats = {}
+        riftPlayerSaveData.classes = {}
+        for(let key in classes[riftKey]) {
+            riftPlayerSaveData.classes[key] = {owned:false}
+            if(classes[riftKey][key].skills) {
+                let skills = {}
+                for(let key2 in classes[riftKey][key].skills) {
+                    skills[key2] = {owned:false}
+                }
+                riftPlayerSaveData.classes[key].skills = skills
             }
-            playerSaveData.achivements[key].achivements = playerAchivements
         }
-    }
-    playerSaveData.teleportationPoints = {
-        unlocked:false
-    }
-    for(let key in teleportationPoints) {
-        playerSaveData.teleportationPoints[key] = {unlocked:false}
+        riftPlayerSaveData.achivements = {}
+        for(let key in achivements[riftKey]) {
+            riftPlayerSaveData.achivements[key] = {progress:0,completed:false}
+            if(achivements[riftKey][key].achivements) {
+                let playerAchivements = []
+                for(let i = 0;i<achivements[riftKey][key].achivements.length;i++) {
+                    playerAchivements[i] = {completed:false,progress:0}
+                }
+                riftPlayerSaveData.achivements[key].achivements = playerAchivements
+            }
+        }
+        riftPlayerSaveData.teleportationPoints = {
+            unlocked:false
+        }
+        for(let key in teleportationPoints[riftKey]) {
+            riftPlayerSaveData.teleportationPoints[key] = {unlocked:false}
+        }
     }
     playerSaveData.servants = []
+    playerPersistantData.activeRift = 'main_timeline1'
     playerPersistantData.initiated = true
     player.teleportTo(e.server.getLevel('fantasy_craft:void_dimension1'), 0, 0, 0, [], player.yaw, player.pitch)
     e.server.runCommandSilent('/execute in fantasy_craft:void_dimension1 run photon fx kubejs:player_spawn block 0 0 0')
