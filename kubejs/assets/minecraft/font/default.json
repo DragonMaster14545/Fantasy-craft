@@ -524,6 +524,13 @@
       "ascent": 8,
       "height": 8,
       "chars": ["\uE074"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/armor_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE075"]
     }
   ]
 }

@@ -12,6 +12,9 @@ NetworkEvents.dataReceived('jade_get_persistent_data',e => {
         toSendData.damageDealtMultiplier = calculateTypeDamageMultiplier(getMainHandItemTypes(e,player),getEntityTypes(e,entity))
         toSendData.damageReceivedMultiplier = calculateTypeDamageMultiplier(getEntityTypes(e,entity),getArmorItemTypes(e,player))
     }
+    if(entity.persistentData.armor) {
+        toSendData.armor = entity.persistentData.armor
+    }
     persistentData = {player:{},entity:persistentData,data:toSendData}
     player.sendData('jade_set_persistent_data', {entity:entity.id,level:data.level,persistentData:persistentData})
 })

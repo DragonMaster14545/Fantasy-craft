@@ -47,7 +47,7 @@ StartupEvents.registry('block', event => {
     })
 })
 StartupEvents.registry('mob_effect', event => {
-    event.create('immovable').displayName('Immovable').modifyAttribute('generic.movement_speed',UUID.randomUUID(),-100,'multiply_total').modifyAttribute('forge:entity_gravity',UUID.randomUUID(),10000,'multiply_total').color(Color.BLACK)
+    event.create('immovable').displayName('Immovable').modifyAttribute('generic.movement_speed','33d6e469-1ea5-4dc7-9073-5b33104b4b0e',-100,'multiply_total').modifyAttribute('forge:entity_gravity','33d6e469-1ea5-4dc7-9073-5b33104b4b0e',10000,'multiply_total').color(Color.BLACK)
 })
 StartupEvents.registry('entity_type', event => {
     event.create('npc1', 'entityjs:animal')

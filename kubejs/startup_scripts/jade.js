@@ -48,6 +48,9 @@ let addTooltips = (event) => {
 			if(persistentData.data.damageReceivedMultiplier) {
 				addToTooltip(Text.red('Damage received multiplier: ' + persistentData.data.damageReceivedMultiplier))
 			}
+			if(persistentData.data.armor) {
+				addToTooltip(Text.white('\uE075 ' + persistentData.data.armor))
+			}
 		}
 	})
 }
