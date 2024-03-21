@@ -32,27 +32,27 @@ let addTooltips = (event) => {
 		if (!(accessor instanceof $WailaEntityAccessor)) return
 		let addToTooltip = comp => tooltip["add(int,net.minecraft.network.chat.Component)"](tooltip.size() - 1, comp)
 		if (!accessor.getEntity().persistentData.jadeData) {
-		Client.player.sendData('jade_get_persistent_data', { entity: accessor.getEntity().stringUuid, level: accessor.getEntity().level.dimension.toString() })
+			Client.player.sendData('jade_get_persistent_data', { entity: accessor.getEntity().stringUuid, level: accessor.getEntity().level.dimension.toString() })
 		} else {
-			updateTimer ++
-			if(updateTimer >= 4) {
+			updateTimer++
+			if (updateTimer >= 4) {
 				Client.player.sendData('jade_get_persistent_data', { entity: accessor.getEntity().stringUuid, level: accessor.getEntity().level.dimension.toString() })
 			}
 			let persistentData = accessor.getEntity().persistentData.jadeData
-			if(persistentData.data.enemyTypes) {
+			if (persistentData.data.enemyTypes) {
 				addToTooltip(Text.white(persistentData.data.enemyTypes))
 			}
-			if(persistentData.data.damageDealtMultiplier) {
+			if (persistentData.data.damageDealtMultiplier) {
 				addToTooltip(Text.red('Damage dealt multiplier: ' + persistentData.data.damageDealtMultiplier))
 			}
-			if(persistentData.data.damageReceivedMultiplier) {
+			if (persistentData.data.damageReceivedMultiplier) {
 				addToTooltip(Text.red('Damage received multiplier: ' + persistentData.data.damageReceivedMultiplier))
 			}
-			if(persistentData.data.armor) {
-				addToTooltip(Text.white('\uE075 ').append(Text.gray( persistentData.data.armor)))
+			if (persistentData.data.armor) {
+				addToTooltip(Text.white('\uE075 ').append(Text.gray(persistentData.data.armor)))
 			}
-			if(persistentData.data.hpBars) {
-				addToTooltip(Text.white('\uE076 ').append(Text.red( persistentData.data.hpBars-persistentData.data.activeHpBar+'x '+persistentData.data.maxHp+' hp + '+persistentData.data.enemyHealth)))
+			if (persistentData.data.hpBars) {
+				addToTooltip(Text.white('\uE076 ').append(Text.red(persistentData.data.hpBars - persistentData.data.activeHpBar + 'x ' + persistentData.data.maxHp + ' hp + ' + persistentData.data.enemyHealth)))
 			}
 		}
 	})

@@ -1,16 +1,16 @@
 ServerEvents.commandRegistry(e => {
-    const { commands: Commands, arguments: Arguments } = e
-    let cmd = Commands.literal('fantasy_craft')
-  
-    cmd.then(Commands.literal('resetPlayer').requires(s => true)
-        .executes(ctx => {
-          ctx.source.playerOrException.persistentData.initiated = false
-          ctx.source.sendSuccess(Text.of('Sucesfully reset player'), false)
-          return 1;
-        })
-      )
-    e.register(cmd)
-  })
+  const { commands: Commands, arguments: Arguments } = e
+  let cmd = Commands.literal('fantasy_craft')
+
+  cmd.then(Commands.literal('resetPlayer').requires(s => true)
+    .executes(ctx => {
+      ctx.source.playerOrException.persistentData.initiated = false
+      ctx.source.sendSuccess(Text.of('Sucesfully reset player'), false)
+      return 1;
+    })
+  )
+  e.register(cmd)
+})
 
 
 // TODO Current issues:

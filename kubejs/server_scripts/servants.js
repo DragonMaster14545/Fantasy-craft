@@ -11,31 +11,31 @@
 
 */
 
-function addServant(e,player,servantData,amount,bypassLimit) {
+function addServant(e, player, servantData, amount, bypassLimit) {
     let playerSaveData = e.server.persistentData.playerData[player.stringUuid]
     let servants = playerSaveData.servants
     let baseMaxServants = 2
-    if(bypassLimit) {
+    if (bypassLimit) {
         baseMaxServants = 99999999
     }
-    let maxServants = getBonus(e,player,'any','maxServants',baseMaxServants)
-    for(let i = amount;i>0;i--) {
-        if(servants.length >= maxServants) {
+    let maxServants = getBonus(e, player, 'any', 'maxServants', baseMaxServants)
+    for (let i = amount; i > 0; i--) {
+        if (servants.length >= maxServants) {
         } else {
             servantData.remove = false
-            if(servantData.type == 'mele') {
+            if (servantData.type == 'mele') {
                 servantData.cooldown = 0
                 servantData.isWithPlayer = true
-            } else if(servantData.type == 'buff') {
-            } else if(servantData.type == 'ranged') {
+            } else if (servantData.type == 'buff') {
+            } else if (servantData.type == 'ranged') {
                 servantData.cooldown = 0
             }
             servants.push(servantData)
-            adjustServantPositions(e,player)
+            adjustServantPositions(e, player)
         }
     }
 }
-function adjustServantPositions(e,player) {
+function adjustServantPositions(e, player) {
     let playerSaveData = e.server.persistentData.playerData[player.stringUuid]
     let servants = playerSaveData.servants
     let amount = servants.length
@@ -43,10 +43,10 @@ function adjustServantPositions(e,player) {
     let activeRadius = -1
     let servantsInRadius = 0
     let positions = {}
-    for(let i = 0;i < amount;i++) {
-        if(servantsInRadius <= 0) {
+    for (let i = 0; i < amount; i++) {
+        if (servantsInRadius <= 0) {
             activeRadius += 1
-            servantsInRadius = activeRadius*2+2
+            servantsInRadius = activeRadius * 2 + 2
             positions[activeRadius] = []
         }
         servantsInRadius -= 1
@@ -54,10 +54,10 @@ function adjustServantPositions(e,player) {
         servants[i].radius = radius
         positions[activeRadius].push(i)
     }
-    for(let key in positions) {
+    for (let key in positions) {
         let position = positions[key]
         let servantsInPosition = position.length
-        let angelToAdd = 360/servantsInPosition
+        let angelToAdd = 360 / servantsInPosition
         let activeAngel = 0
         position.forEach(i => {
             servants[i].angel = activeAngel
@@ -69,44 +69,44 @@ function adjustServantPositions(e,player) {
 * @param {Internal.ServerPlayer} player
 * @param {Internal.NetworkEventJS} e 
 */
-function servantTick(e,player) {
+function servantTick(e, player) {
     let drawOnClient = []
     let playerSaveData = e.server.persistentData.playerData[player.stringUuid]
     let servants = playerSaveData.servants
     let servantHeightOverPlayer = 4
     servants.forEach(servant => {
         servant.angel += servant.rotation
-        if(servant.duration != undefined) {
+        if (servant.duration != undefined) {
             servant.duration -= 1
-            if(servant.duration <= 0) {
+            if (servant.duration <= 0) {
                 servant.remove = true
-                e.server.scheduleInTicks(1,event => adjustServantPositions(e,player))
+                e.server.scheduleInTicks(1, event => adjustServantPositions(e, player))
             }
         }
         let pos
-        if(servant.x && servant.y && servant.z) {
-            pos = {x:servant.x,y:servant.y,z:servant.z}
+        if (servant.x && servant.y && servant.z) {
+            pos = { x: servant.x, y: servant.y, z: servant.z }
         } else {
-            pos = calculateAngelPosition(servant.radius,servant.angel,{ x: player.x, y: player.y+servantHeightOverPlayer, z: player.z})
+            pos = calculateAngelPosition(servant.radius, servant.angel, { x: player.x, y: player.y + servantHeightOverPlayer, z: player.z })
         }
-        drawOnClient.push({ x: pos.x, y: pos.y, z: pos.z, radius: servant.drawRadius, points: servant.points, verticalPoints:servant.verticalPoints, dimension: player.level.dimension.toString(),particle:servant.particle})
-        if(servant.type == 'ranged') {
+        drawOnClient.push({ x: pos.x, y: pos.y, z: pos.z, radius: servant.drawRadius, points: servant.points, verticalPoints: servant.verticalPoints, dimension: player.level.dimension.toString(), particle: servant.particle })
+        if (servant.type == 'ranged') {
             servant.cooldown += 1
-            if(servant.cooldown >= servant.maxCooldown) {
+            if (servant.cooldown >= servant.maxCooldown) {
                 servant.cooldown = 0
-                let target = getServantNearestEntity(e,player,pos.x,pos.y,pos.z,servant.range)
-                if(target) {
-                    let movement = calculateMovementFromBlocks(pos.x, pos.y, pos.z,target.x,target.y+0.5,target.z)
-                    e.server.persistentData.projectiles.push({ particle:servant.projectile.particle,types:servant.projectile.types,damage:servant.projectile.damage,type: 'ranged_servant',wandId:servant.wandId, owner: player.getStringUuid(), speed: servant.projectile.speed, x: pos.x, y: pos.y, z: pos.z, movementX: movement.movementX, movementY: movement.movementY, movementZ: movement.movementZ, dimension: player.level.dimension.toString(),remove:false })
+                let target = getServantNearestEntity(e, player, pos.x, pos.y, pos.z, servant.range)
+                if (target) {
+                    let movement = calculateMovementFromBlocks(pos.x, pos.y, pos.z, target.x, target.y + 0.5, target.z)
+                    e.server.persistentData.projectiles.push({ particle: servant.projectile.particle, types: servant.projectile.types, damage: servant.projectile.damage, type: 'ranged_servant', wandId: servant.wandId, owner: player.getStringUuid(), speed: servant.projectile.speed, x: pos.x, y: pos.y, z: pos.z, movementX: movement.movementX, movementY: movement.movementY, movementZ: movement.movementZ, dimension: player.level.dimension.toString(), remove: false })
                 }
             }
-        } else if(servant.type == 'mele') {
-            if(servant.isWithPlayer) {
+        } else if (servant.type == 'mele') {
+            if (servant.isWithPlayer) {
                 servant.cooldown += 1
-                if(servant.cooldown >= servant.maxCooldown) {
+                if (servant.cooldown >= servant.maxCooldown) {
                     servant.cooldown = 0
-                    let target = getServantNearestEntity(e,player,pos.x,pos.y,pos.z,servant.range)
-                    if(target) {
+                    let target = getServantNearestEntity(e, player, pos.x, pos.y, pos.z, servant.range)
+                    if (target) {
                         servant.target = target.stringUuid
                         servant.hitTarget = false
                         servant.isWithPlayer = false
@@ -115,7 +115,7 @@ function servantTick(e,player) {
                         servant.z = pos.z
                     }
                 }
-            } else{
+            } else {
                 for (let i = servant.attack.speed; i > 0; i--) {
                     let multiplier = 0
                     if (i >= 1) {
@@ -123,37 +123,37 @@ function servantTick(e,player) {
                     } else {
                         multiplier = i
                     }
-                    if(servant.target) {
-                        let target = getServantNearestEntity(e,player,pos.x,pos.y,pos.z,servant.range,servant.target)
-                        if(target) {    
+                    if (servant.target) {
+                        let target = getServantNearestEntity(e, player, pos.x, pos.y, pos.z, servant.range, servant.target)
+                        if (target) {
                             let dx = target.x - pos.x
                             let dy = target.y - pos.y
                             let dz = target.z - pos.z
-                            let distance = Math.abs(dx)+Math.abs(dy)+Math.abs(dz)
-                            if(distance <= 1.5) {
+                            let distance = Math.abs(dx) + Math.abs(dy) + Math.abs(dz)
+                            if (distance <= 1.5) {
                                 delete servant.target
                                 servant.hitTarget = true
-                                let couldDamage = processDamage(e,player,target,'wand',target.health,servant.wandId,{types:servant.attack.types,damage:servant.attack.damage,type:'mele_servant'})
-                                if(couldDamage) {
-                                    drawCircle(e,{particle:'minecraft:crit',dimension:player.level.dimension.toString(),x:target.x,y:target.y,z:target.z,points:20,radius:1})
+                                let couldDamage = processDamage(e, player, target, 'wand', target.health, servant.wandId, { types: servant.attack.types, damage: servant.attack.damage, type: 'mele_servant' })
+                                if (couldDamage) {
+                                    drawCircle(e, { particle: 'minecraft:crit', dimension: player.level.dimension.toString(), x: target.x, y: target.y, z: target.z, points: 20, radius: 1 })
                                 }
                             } else {
-                                let movement = calculateMovementFromBlocks(pos.x, pos.y, pos.z,target.x,target.y+0.5,target.z)
-                                servant.x += movement.movementX*multiplier
-                                servant.y += movement.movementY*multiplier
-                                servant.z += movement.movementZ*multiplier
+                                let movement = calculateMovementFromBlocks(pos.x, pos.y, pos.z, target.x, target.y + 0.5, target.z)
+                                servant.x += movement.movementX * multiplier
+                                servant.y += movement.movementY * multiplier
+                                servant.z += movement.movementZ * multiplier
                             }
                         } else {
                             delete servant.target
                             servant.hitTarget = true
                         }
-                    } else if(servant.hitTarget == true) {
-                        let playerTarget = calculateAngelPosition(servant.radius,servant.angel,{ x: player.x, y: player.y+servantHeightOverPlayer, z: player.z})  
+                    } else if (servant.hitTarget == true) {
+                        let playerTarget = calculateAngelPosition(servant.radius, servant.angel, { x: player.x, y: player.y + servantHeightOverPlayer, z: player.z })
                         let dx = playerTarget.x - pos.x
                         let dy = playerTarget.y - pos.y
                         let dz = playerTarget.z - pos.z
-                        let distance = Math.abs(dx)+Math.abs(dy)+Math.abs(dz)
-                        if(distance <= 1.5) {
+                        let distance = Math.abs(dx) + Math.abs(dy) + Math.abs(dz)
+                        if (distance <= 1.5) {
                             servant.isWithPlayer = true
                             servant.hitTarget = false
                             delete servant.x
@@ -161,49 +161,49 @@ function servantTick(e,player) {
                             delete servant.z
                             break
                         } else {
-                            let movement = calculateMovementFromBlocks(pos.x, pos.y, pos.z,playerTarget.x,playerTarget.y,playerTarget.z)
-                            servant.x += movement.movementX*multiplier
-                            servant.y += movement.movementY*multiplier
-                            servant.z += movement.movementZ*multiplier
+                            let movement = calculateMovementFromBlocks(pos.x, pos.y, pos.z, playerTarget.x, playerTarget.y, playerTarget.z)
+                            servant.x += movement.movementX * multiplier
+                            servant.y += movement.movementY * multiplier
+                            servant.z += movement.movementZ * multiplier
                         }
                     }
                 }
-            } 
+            }
         }
     })
     e.server.persistentData.playerData[player.stringUuid].servants = servants.filter(servant => !(servant.remove == true))
-    drawClientSpheresToAllPlayers(e,player.x,player.y,player.z,drawOnClient,player.level.dimension.toString())
+    drawClientSpheresToAllPlayers(e, player.x, player.y, player.z, drawOnClient, player.level.dimension.toString())
 }
-function getServantNearestEntity(e,player,x,y,z,range,entityUuid) {
+function getServantNearestEntity(e, player, x, y, z, range, entityUuid) {
     let dim = e.server.getLevel(player.level.dimension.toString())
-    let box = AABB.of(x - range, y -range, z - range, x + range, y + range, z + range)
+    let box = AABB.of(x - range, y - range, z - range, x + range, y + range, z + range)
     let entitiesWithin = dim.getEntitiesWithin(box)
     let entitiesFound = entitiesWithin.length
     if (entitiesFound > 0) {
-        let nearestEntity = {i:-1,distance:Infinity-1}
+        let nearestEntity = { i: -1, distance: Infinity - 1 }
         for (let i = 0; entitiesFound - 1 >= i; i++) {
             let entity = entitiesWithin[i]
-            if(entityUuid) {
-                if(entity.stringUuid == entityUuid) {
+            if (entityUuid) {
+                if (entity.stringUuid == entityUuid) {
                     return entity
                 }
             } else {
                 let isOwner = false
-                if(entity.isPlayer) {
-                    if(entity.stringUuid == player.stringUuid) {
+                if (entity.isPlayer) {
+                    if (entity.stringUuid == player.stringUuid) {
                         isOwner = true
                     }
                 }
                 if (entity.isLiving() && !isOwner) {
-                    let distance = calculateDistance(x, y, z,entity.x,entity.y,entity.z)
-                    if(nearestEntity.distance >= distance) {
+                    let distance = calculateDistance(x, y, z, entity.x, entity.y, entity.z)
+                    if (nearestEntity.distance >= distance) {
                         nearestEntity.distance = distance
                         nearestEntity.i = i
                     }
                 }
             }
         }
-        if(nearestEntity.i > -1) {
+        if (nearestEntity.i > -1) {
             let target = entitiesWithin[nearestEntity.i]
             return target
         }

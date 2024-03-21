@@ -2,12 +2,12 @@ function drawCircles(e) {
   Object.values(circles).forEach(circle => {
     if (!(circle.displayed == false)) {
       if (e.server.runCommandSilent(`execute positioned ${circle.x} ${circle.y} ${circle.z} in ${circle.dimension} if entity @a[distance=..${circle.radius + 40}]`)) {
-        drawCircle(e,circle)
+        drawCircle(e, circle)
       }
     }
   })
 }
-function drawCircle(e,circle) {
+function drawCircle(e, circle) {
   let points = []
   for (let i = 0; i < circle.points; i++) {
     let theta = (i / circle.points) * 2 * JavaMath.PI
@@ -18,14 +18,14 @@ function drawCircle(e,circle) {
   }
   let level = e.server.getLevel(circle.dimension)
   points.forEach(point => {
-    level.sendParticles(circle.particle,point.x,point.y,point.z,0,0,0,1,0)
+    level.sendParticles(circle.particle, point.x, point.y, point.z, 0, 0, 0, 1, 0)
   })
 }
 function drawSpheres(e) {
   Object.values(spheres).forEach(sphere => {
     if (!(sphere.displayed == false)) {
       if (e.server.runCommandSilent(`execute positioned ${sphere.x} ${sphere.y} ${sphere.z} in ${sphere.dimension} if entity @a[distance=..${sphere.radius + 40}]`)) {
-        drawSphere(e,sphere)
+        drawSphere(e, sphere)
       }
     }
   })
@@ -48,14 +48,14 @@ function drawSphere(e, sphere) {
   }
   let level = e.server.getLevel(sphere.dimension)
   points.forEach(point => {
-    level.sendParticles(sphere.particle,point.x,point.y,point.z,0,0,0,1,0)
+    level.sendParticles(sphere.particle, point.x, point.y, point.z, 0, 0, 0, 1, 0)
   });
 }
-function drawClientSpheresToAllPlayers(e,x,y,z,spheres,dim) {
+function drawClientSpheresToAllPlayers(e, x, y, z, spheres, dim) {
   e.server.getLevel(dim).getPlayers().forEach(player => {
-      if(player.distanceToSqr(new Vec3d(x,y,z)) <= 50) {
-        player.sendData('draw_spheres', {spheres:spheres})
-      }
+    if (player.distanceToSqr(new Vec3d(x, y, z)) <= 50) {
+      player.sendData('draw_spheres', { spheres: spheres })
+    }
   })
 }
 function drawCube(e, cuboid) {
@@ -76,14 +76,14 @@ function drawCube(e, cuboid) {
 
   let level = e.server.getLevel(cuboid.dimension);
   edges.forEach(edge => {
-    let points = getLinePoints(edge.x1, edge.y1, edge.z1, edge.x2, edge.y2, edge.z2,cuboid.points/10);
+    let points = getLinePoints(edge.x1, edge.y1, edge.z1, edge.x2, edge.y2, edge.z2, cuboid.points / 10);
     points.forEach(point => {
       level.sendParticles(cuboid.particle, point.x.toFixed(2), point.y.toFixed(2), point.z.toFixed(2), 0, 0, 0, 1, 0);
     });
   });
 }
 
-function getLinePoints(x1, y1, z1, x2, y2, z2,pointAmount) {
+function getLinePoints(x1, y1, z1, x2, y2, z2, pointAmount) {
   let points = [];
   let dx = Math.abs(x2 - x1);
   let dy = Math.abs(y2 - y1);

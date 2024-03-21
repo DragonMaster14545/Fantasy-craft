@@ -1,9 +1,9 @@
-NetworkEvents.dataReceived('draw_spheres',e => {
-    let data = e.data
-    let spheres = data.spheres
-    spheres.forEach(sphere => {
-        drawSphere(sphere)
-    })
+NetworkEvents.dataReceived('draw_spheres', e => {
+  let data = e.data
+  let spheres = data.spheres
+  spheres.forEach(sphere => {
+    drawSphere(sphere)
+  })
 })
 function drawSphere(sphere) {
   let pi = JavaMath.PI
