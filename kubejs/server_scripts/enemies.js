@@ -8,58 +8,45 @@ function entitySpawnTick(e) {
                 let block = dim.getBlock(spawn.x,spawn.y,spawn.z)
                 if(block.getPlayersInRadius(spawn.spawnRadius).length > 0) {
                     let point = getRandomPointInCircle(spawn)
-                    let block = dim.getBlock(point.x,point.y,point.z)
-                    let selectedEntity = spawn.entities[Math.floor(Math.random()*spawn.entities.length)]
-                    let entity = block.createEntity(selectedEntity.id)
-                    if(selectedEntity.maxHp) {
-                        console.log("Original max HP: " + entity.maxHealth)
-                        entity.getAttribute($Attributes.MAX_HEALTH).removeModifiers()
-                        entity.maxHealth = selectedEntity.maxHp
-                        console.log("New max HP: " + entity.maxHealth)
-                        entity.health = selectedEntity.maxHp
-                    }
-                    if(selectedEntity.name) {
-                        entity.customName = selectedEntity.name
-                    }
-                    let persistentData = entity.persistentData
-                    if(selectedEntity.armor) {
-                        persistentData.armor = selectedEntity.armor
-                    }
-                    if(selectedEntity.damage) {
-                        persistentData.damage = selectedEntity.damage
-                    }
-                    if(selectedEntity.types) {
-                        persistentData.types = selectedEntity.types
-                    }
-                    entity.spawn()
+                    spawnEnemy(e,point.x,point.y,point.z,spawn.dimension,spawn.entities[Math.floor(Math.random()*spawn.entities.length)])
                 }
             } else if(spawn.type == 'rectangle') {
                 let dim = e.server.getLevel(spawn.dimension)
                 let block = dim.getBlock(spawn.x1,spawn.y1,spawn.z1)
                 if(block.getPlayersInRadius(spawn.spawnRadius).length > 0) {
                     let point = getRandomPointInRectangle(spawn)
-                    let block = dim.getBlock(point.x,point.y,point.z)
-                    let selectedEntity = spawn.entities[Math.floor(Math.random()*spawn.entities.length)]
-                    let entity = block.createEntity(selectedEntity.id)
-                    if(selectedEntity.maxHp) {
-                        entity.health = selectedEntity.maxHp
-                    }
-                    if(selectedEntity.name) {
-                        entity.customName = selectedEntity.name
-                    }
-                    let persistentData = entity.persistentData
-                    if(selectedEntity.armor) {
-                        persistentData.armor = selectedEntity.armor
-                    }
-                    if(selectedEntity.damage) {
-                        persistentData.damage = selectedEntity.damage
-                    }
-                    if(selectedEntity.types) {
-                        persistentData.types = selectedEntity.types
-                    }
-                    entity.spawn()
+                    spawnEnemy(e,point.x,point.y,point.z,spawn.dimension,spawn.entities[Math.floor(Math.random()*spawn.entities.length)])
                 }
             }
         }
     })
+}
+function spawnEnemy(e,x,y,z,dimension,data) {
+    let dim = e.server.getLevel(dimension)
+    let block = dim.getBlock(x,y,z)
+    let entity = block.createEntity(data.id)
+    let persistentData = entity.persistentData
+    if(data.maxHp) {
+        entity.getAttribute($Attributes.MAX_HEALTH).removeModifiers()
+        entity.maxHealth = data.maxHp
+        entity.health = data.maxHp
+        persistentData.maxHp = data.maxHp
+    }
+    if(data.name) {
+        entity.customName = data.name
+    }
+    if(data.armor) {
+        persistentData.armor = data.armor
+    }
+    if(data.damage) {
+        persistentData.damage = data.damage
+    }
+    if(data.types) {
+        persistentData.types = data.types
+    }
+    if(data.hpBars) {
+        persistentData.hpBars = data.hpBars
+        persistentData.activeHpBar = 1
+    }
+    entity.spawn()
 }

@@ -49,7 +49,10 @@ let addTooltips = (event) => {
 				addToTooltip(Text.red('Damage received multiplier: ' + persistentData.data.damageReceivedMultiplier))
 			}
 			if(persistentData.data.armor) {
-				addToTooltip(Text.white('\uE075 ' + persistentData.data.armor))
+				addToTooltip(Text.white('\uE075 ').append(Text.gray( persistentData.data.armor)))
+			}
+			if(persistentData.data.hpBars) {
+				addToTooltip(Text.white('\uE076 ').append(Text.red( persistentData.data.hpBars-persistentData.data.activeHpBar+'x '+persistentData.data.maxHp+' hp + '+persistentData.data.enemyHealth)))
 			}
 		}
 	})

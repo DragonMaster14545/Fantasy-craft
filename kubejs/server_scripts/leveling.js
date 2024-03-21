@@ -66,6 +66,12 @@ EntityEvents.hurt(e => {
     if(e.entity.persistentData.dead == undefined && e.damage > 0) {
         if(processDamage(e,e.source.actual,e.entity,'unknown',e.entity.health)) {
             e.cancel()
+        } else if(e.entity.health - e.damage <= 0) {
+            if(e.entity.isLiving && !e.entity.isPlayer()) {
+                if(enemyDied(e,e.entity)) {
+                    e.cancel()
+                }
+            }
         }
     }
 })

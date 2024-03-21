@@ -15,6 +15,13 @@ NetworkEvents.dataReceived('jade_get_persistent_data',e => {
     if(entity.persistentData.armor) {
         toSendData.armor = entity.persistentData.armor
     }
+    if(entity.persistentData.hpBars) {
+        if(entity.persistentData.activeHpBar < entity.persistentData.hpBars)
+        toSendData.hpBars = entity.persistentData.hpBars
+        toSendData.activeHpBar = entity.persistentData.activeHpBar
+        toSendData.maxHp = entity.persistentData.maxHp
+        toSendData.enemyHealth = entity.health
+    }
     persistentData = {player:{},entity:persistentData,data:toSendData}
     player.sendData('jade_set_persistent_data', {entity:entity.id,level:data.level,persistentData:persistentData})
 })

@@ -94,10 +94,13 @@ function processDamageUnknown(e,attacker,attacked,damageType,attackedHp,data,hit
             attacked.attack(damageSource,0)
         } else {
             attacked.persistentData.dead = true
+            let cancelDamage
             if(!attacked.isPlayer()) {
-                enemyDied(e,attacked)
+                cancelDamage = enemyDied(e,attacked)
             }
-            attacked.attack(damageSource,damage)
+            if(!cancelDamage) {
+                attacked.attack(damageSource,damage)
+            }
         }
     } else return false     
     if(attacked.isPlayer()) {
@@ -207,10 +210,13 @@ function processDamageWand(e,attacker,attacked,damageType,attackedHp,wandId,data
         attacked.attack(damageSource,0)
     } else {
         attacked.persistentData.dead = true
+        let cancelDamage
         if(!attacked.isPlayer()) {
-            enemyDied(e,attacked)
+            cancelDamage = enemyDied(e,attacked)
         }
-        attacked.attack(damageSource,damage)
+        if(!cancelDamage) {
+            attacked.attack(damageSource,damage)
+        }
     }
     if(damageData.effects) {
         damageData.effects.forEach(effect => {
@@ -269,5 +275,15 @@ function givePlayerCombatXp(e,player,amount,isWand,wandId,data) {
     }
 }
 function enemyDied(e,enemy) {
-
+    let cancelDamage = false
+    if(enemy.persistentData.hpBars) {
+        if(enemy.persistentData.hpBars > enemy.persistentData.activeHpBar) {
+            enemy.health = enemy.persistentData.maxHp
+            cancelDamage = true
+            enemy.persistentData.activeHpBar += 1
+        }    
+    }
+    if(cancelDamage) {
+        return true
+    } else return false
 }

@@ -206,8 +206,12 @@ function getEntityTypes(e,entity) {
 function getMainHandItemTypes(e,player) {
     if(player.mainHandItem) {
         if(player.mainHandItem.hasNBT()) {
-            let itemDetails = e.server.persistentData.playerData[player.stringUuid].itemDetails
-            return itemDetails[player.mainHandItem.nbt.customDataId].types
+            if(player.mainHandItem.nbt.customDataId) {
+                let itemDetails = e.server.persistentData.playerData[player.stringUuid].itemDetails
+                return itemDetails[player.mainHandItem.nbt.customDataId].types
+            } else {
+                return []
+            }
         } else {
             return []
         }

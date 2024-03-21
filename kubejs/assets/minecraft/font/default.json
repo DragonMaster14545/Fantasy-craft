@@ -531,6 +531,13 @@
       "ascent": 8,
       "height": 8,
       "chars": ["\uE075"]
+    },
+    {
+      "type": "bitmap",
+      "file": "kubejs:rpg_textures/life_icon.png",
+      "ascent": 8,
+      "height": 8,
+      "chars": ["\uE076"]
     }
   ]
 }
