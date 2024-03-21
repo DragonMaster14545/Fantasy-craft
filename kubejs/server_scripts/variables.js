@@ -296,7 +296,7 @@ let achivements = {
 
 
 let circles = {
-    spawn: { x: 0, y: 0.05, z: 0, radius: 13, points: 100, dimension: 'fantasy_craft:void_dimension', particle:'minecraft:happy_villager', displayed: true }
+    spawn: { x: 0, y: 0.05, z: 0, radius: 13, points: 100, dimension: 'fantasy_craft:void_dimension', particle:'minecraft:happy_villager', displayed: false }
 }
 
 
@@ -323,5 +323,11 @@ let effects = {
 let rifts = {
     main_timeline1:{name:{text:'Main',color:0x39ed07}}
 }
+
+
+let enemySpawns = [
+    {type:'circle',x:0,y:0,z:0,radius:10,dimension:'fantasy_craft:void_dimension1',spawnRadius:50},
+    {type:'rectangle',x1:10,y1:0,z1:10,x2:-10,y2:0,z2:-10,dimension:'fantasy_craft:void_dimension1',spawnRadius:50}
+]
 
 

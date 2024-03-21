@@ -383,26 +383,37 @@ function getPlayerLuck(e,player) {
     })
     return luck
 }
-  /*
-  function getRandomPointInCircle(circleName) {
-    let circle = mysteryLandsCircles[circleName]
-    var randomRadius = Math.random() * circle.radius
-    var theta = Math.random() * (2 * JavaMath.PI)
-    var x = circle.x + randomRadius * Math.cos(theta)
-    var z = circle.z + randomRadius * Math.sin(theta)
-    var randomPoint = { x: x, y: circle.y, z: z }
+function getRandomPointInCircle(circleData) {
+    let circle = circleData
+    let randomRadius = Math.random() * circle.radius
+    let theta = Math.random() * (2 * JavaMath.PI)
+    let x = circle.x + randomRadius * Math.cos(theta)
+    let z = circle.z + randomRadius * Math.sin(theta)
+    let randomPoint = { x: x, y: circle.y, z: z,dimension:circle.dimension }
     return randomPoint
-  }
-  function isPlayerInsideCircle(playerX, playerY, playerZ, playerDim, circleName) {
+}
+function getRandomPointInRectangle(rectangleData) {
+    let minX = Math.min(rectangleData.x1,rectangleData.x2)
+    let maxX = Math.max(rectangleData.x1,rectangleData.x2)
+    let minY = Math.min(rectangleData.y1,rectangleData.y2)
+    let maxY = Math.max(rectangleData.y1,rectangleData.y2)
+    let minZ = Math.min(rectangleData.z1,rectangleData.z2)
+    let maxZ = Math.max(rectangleData.z1,rectangleData.z2)
+    let randomX = Math.random() * (maxX - minX) + minX;
+    let randomY = Math.random() * (maxY - minY) + minY;
+    let randomZ = Math.random() * (maxZ - minZ) + minZ;
+    let randomPoint = { x: randomX, y: randomY, z: randomZ,dimension:rectangleData.dimension }
+    return randomPoint
+}
+function isPlayerInsideCircle(player, circleData) {
     let range = 5
-    let circleCenterX = mysteryLandsCircles[circleName].x
-    let circleCenterY = mysteryLandsCircles[circleName].y
-    let circleCenterZ = mysteryLandsCircles[circleName].z
-    let circleDim = mysteryLandsCircles[circleName].dimension
-    let circleRadius = mysteryLandsCircles[circleName].radius
+    let circleCenterX = circleData.x
+    let circleCenterY = circleData.y
+    let circleCenterZ = circleData.z
+    let circleDim = circleData.dimension
+    let circleRadius = circleData.radius
     let minY = circleCenterY - range
     let maxY = circleCenterY + range
-    let distance = Math.sqrt(Math.pow(playerX - circleCenterX, 2) + Math.pow(playerZ - circleCenterZ, 2))
-    return distance <= circleRadius && playerY >= minY && playerY <= maxY && playerDim == circleDim
-  }
-  */
+    let distance = Math.sqrt(Math.pow(player.x - circleCenterX, 2) + Math.pow(player.z - circleCenterZ, 2))
+    return distance <= circleRadius && player.y >= minY && player.y <= maxY && player.level.dimension.toString() == circleDim
+}

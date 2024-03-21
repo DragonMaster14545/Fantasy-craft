@@ -101,7 +101,26 @@ ItemEvents.rightClicked('kubejs:cheat_item',e => {
 ServerEvents.tick(e => {
     e.server.getPlayers().forEach(player => {
         if(showEnemySpawnAreas) {
-
+            enemySpawns.forEach(area => {
+                let dimension = e.server.getLevel(area.dimension)
+                if(area.type == 'circle') {
+                    let block = dimension.getBlock(area.x,area.y,area.z)
+                    if(block.getPlayersInRadius(100).length >= 1) {
+                        let circle = area
+                        circle.points = area.radius*5
+                        circle.particle = 'minecraft:cloud'
+                        drawCircle(e,circle)
+                    }
+                } else if(area.type == 'rectangle') {
+                    let block = dimension.getBlock(area.x1,area.y1,area.z1)
+                    if(block.getPlayersInRadius(100).length >= 1) {
+                        let cube = area
+                        cube.points = 200
+                        cube.particle = 'minecraft:cloud'
+                        drawCube(e,cube)
+                    }
+                }
+            })
         }
     })
 })

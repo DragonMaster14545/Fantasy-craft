@@ -58,3 +58,49 @@ function drawClientSpheresToAllPlayers(e,x,y,z,spheres,dim) {
       }
   })
 }
+function drawCube(e, cuboid) {
+  let edges = [
+    { x1: cuboid.x1, y1: cuboid.y1, z1: cuboid.z1, x2: cuboid.x2, y2: cuboid.y1, z2: cuboid.z1 },
+    { x1: cuboid.x2, y1: cuboid.y1, z1: cuboid.z1, x2: cuboid.x2, y2: cuboid.y2, z2: cuboid.z1 },
+    { x1: cuboid.x2, y1: cuboid.y2, z1: cuboid.z1, x2: cuboid.x1, y2: cuboid.y2, z2: cuboid.z1 },
+    { x1: cuboid.x1, y1: cuboid.y2, z1: cuboid.z1, x2: cuboid.x1, y2: cuboid.y1, z2: cuboid.z1 },
+    { x1: cuboid.x1, y1: cuboid.y1, z1: cuboid.z1, x2: cuboid.x1, y2: cuboid.y1, z2: cuboid.z2 },
+    { x1: cuboid.x2, y1: cuboid.y1, z1: cuboid.z1, x2: cuboid.x2, y2: cuboid.y1, z2: cuboid.z2 },
+    { x1: cuboid.x2, y1: cuboid.y2, z1: cuboid.z1, x2: cuboid.x2, y2: cuboid.y2, z2: cuboid.z2 },
+    { x1: cuboid.x1, y1: cuboid.y2, z1: cuboid.z1, x2: cuboid.x1, y2: cuboid.y2, z2: cuboid.z2 },
+    { x1: cuboid.x1, y1: cuboid.y1, z1: cuboid.z2, x2: cuboid.x2, y2: cuboid.y1, z2: cuboid.z2 },
+    { x1: cuboid.x2, y1: cuboid.y1, z1: cuboid.z2, x2: cuboid.x2, y2: cuboid.y2, z2: cuboid.z2 },
+    { x1: cuboid.x2, y1: cuboid.y2, z1: cuboid.z2, x2: cuboid.x1, y2: cuboid.y2, z2: cuboid.z2 },
+    { x1: cuboid.x1, y1: cuboid.y2, z1: cuboid.z2, x2: cuboid.x1, y2: cuboid.y1, z2: cuboid.z2 }
+  ];
+
+  let level = e.server.getLevel(cuboid.dimension);
+  edges.forEach(edge => {
+    let points = getLinePoints(edge.x1, edge.y1, edge.z1, edge.x2, edge.y2, edge.z2,cuboid.points/10);
+    points.forEach(point => {
+      level.sendParticles(cuboid.particle, point.x.toFixed(2), point.y.toFixed(2), point.z.toFixed(2), 0, 0, 0, 1, 0);
+    });
+  });
+}
+
+function getLinePoints(x1, y1, z1, x2, y2, z2,pointAmount) {
+  let points = [];
+  let dx = Math.abs(x2 - x1);
+  let dy = Math.abs(y2 - y1);
+  let dz = Math.abs(z2 - z1);
+  let steps = pointAmount
+  let xIncrement = (x2 - x1) / steps;
+  let yIncrement = (y2 - y1) / steps;
+  let zIncrement = (z2 - z1) / steps;
+  let x = x1;
+  let y = y1;
+  let z = z1;
+  for (let i = 0; i <= steps; i++) {
+    points.push({ x: x, y: y, z: z });
+    x += xIncrement;
+    y += yIncrement;
+    z += zIncrement;
+  }
+  return points;
+}
+
