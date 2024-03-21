@@ -6,6 +6,7 @@ PlayerEvents.loggedIn(e => {
 ServerEvents.tick(e => {
     serverTimerTick(e)
     projectileTick(e)
+    entitySpawnTick(e)
     e.server.players.forEach(player => {
         playerTick(e,player)
     })

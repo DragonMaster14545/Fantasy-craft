@@ -1,4 +1,3 @@
-const UUID = Java.loadClass('java.util.UUID')
 Platform.mods.kubejs.name = 'Fantasy craft'
 ItemEvents.toolTierRegistry(event => {
 	event.add('fantasy_craft.mystery_lands_lv1', tier => {

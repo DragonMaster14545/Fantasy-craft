@@ -1,7 +1,3 @@
-const LivingEntity = Java.loadClass("net.minecraft.world.entity.LivingEntity");
-const AttributeModifier = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier')
-const AttributeModifier$Operation = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier$Operation')
-const EquipmentSlot = Java.loadClass('net.minecraft.world.entity.EquipmentSlot')
 function updateItems(e, player) {
     for (let i = 0; i <= 35; i++) {
         let item = player.getSlot(i).get()

@@ -326,8 +326,8 @@ let rifts = {
 
 
 let enemySpawns = [
-    {type:'circle',x:0,y:0,z:0,radius:10,dimension:'fantasy_craft:void_dimension1',spawnRadius:50},
-    {type:'rectangle',x1:10,y1:0,z1:10,x2:-10,y2:0,z2:-10,dimension:'fantasy_craft:void_dimension1',spawnRadius:50}
+    //{type:'circle',x:0,y:0,z:0,radius:10,dimension:'fantasy_craft:void_dimension1',spawnRadius:20,maxEnemies:10,cooldown:0,maxCooldown:40,entities:[{id:'minecraft:zombie',maxHp:200,armor:0,name:Text.green('test'),damage:1,types:['air']}]},
+    //{type:'rectangle',x1:10,y1:0,z1:10,x2:-10,y2:0,z2:-10,dimension:'fantasy_craft:void_dimension1',spawnRadius:20,maxEnemies:10,cooldown:0,maxCooldown:40,entities:[{id:'minecraft:zombie',maxHp:200,armor:0,name:Text.green('test'),damage:1,types:['air']}]}
 ]
 
 

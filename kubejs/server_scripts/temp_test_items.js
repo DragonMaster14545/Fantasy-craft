@@ -1,4 +1,3 @@
-const $VeilRenderSystem = Java.loadClass('foundry.veil.api.client.render.VeilRenderSystem')
 PlayerEvents.inventoryChanged(e => {
     let player = e.entity
     for (let i = 0; i <= 35; i++) {

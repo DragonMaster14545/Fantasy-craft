@@ -1,22 +1,29 @@
 //priority: 10
 const BigDecimal = Java.loadClass("java.math.BigDecimal")
+const $Attributes = Java.loadClass('net.minecraft.world.entity.ai.attributes.Attributes')
+const LivingEntity = Java.loadClass("net.minecraft.world.entity.LivingEntity");
+const AttributeModifier = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier')
+const AttributeModifier$Operation = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier$Operation')
+const EquipmentSlot = Java.loadClass('net.minecraft.world.entity.EquipmentSlot')
+const UUID = Java.loadClass('java.util.UUID')
+const $VeilRenderSystem = Java.loadClass('foundry.veil.api.client.render.VeilRenderSystem')
 function getRandomCoordinate(minX, minY, minZ, maxX, maxY, maxZ) {
-    const randomX = Math.random() * (maxX - minX) + minX
-    const randomY = Math.random() * (maxY - minY) + minY
-    const randomZ = Math.random() * (maxZ - minZ) + minZ
+    let randomX = Math.random() * (maxX - minX) + minX
+    let randomY = Math.random() * (maxY - minY) + minY
+    let randomZ = Math.random() * (maxZ - minZ) + minZ
   
     return { x: Math.floor(randomX), y: Math.floor(randomY), z: Math.floor(randomZ) }
 }
   function isPointInsideRange(x1, y1, z1, x2, y2, z2, x3, y3, z3, dim, blockDim) {
-    const minX = Math.min(x1, x2)
-    const minY = Math.min(y1, y2)
-    const minZ = Math.min(z1, z2)
-    const maxX = Math.max(x1, x2)
-    const maxY = Math.max(y1, y2)
-    const maxZ = Math.max(z1, z2)
-    const isInsideX = x3 >= minX && x3 <= maxX
-    const isInsideY = y3 >= minY && y3 <= maxY
-    const isInsideZ = z3 >= minZ && z3 <= maxZ
+    let minX = Math.min(x1, x2)
+    let minY = Math.min(y1, y2)
+    let minZ = Math.min(z1, z2)
+    let maxX = Math.max(x1, x2)
+    let maxY = Math.max(y1, y2)
+    let maxZ = Math.max(z1, z2)
+    let isInsideX = x3 >= minX && x3 <= maxX
+    let isInsideY = y3 >= minY && y3 <= maxY
+    let isInsideZ = z3 >= minZ && z3 <= maxZ
     return isInsideX && isInsideY && isInsideZ && dim == blockDim
 }
 function formatBigDecimal(bigNumber) {
