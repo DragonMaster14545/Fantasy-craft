@@ -13,7 +13,7 @@ NetworkEvents.dataReceived('KeyPressed', e => {
  */
 let rpgMainMenuGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.darkAqua('Rpg main menu')), 4, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
         let mainQuestProgress = playerSaveData.rifts[player.persistentData.activeRift].mainQuestProgress
         gui.slot(0, 0, slot => {
@@ -67,7 +67,7 @@ let rpgMainMenuGui = (event, player, page) => {
  */
 let rpgTeleportationPointsGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.darkPurple('Teleportation points')), 6, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
         let playerTeleportationPoints = playerSaveData.rifts[player.persistentData.activeRift].teleportationPoints
         let slotX = 0
@@ -105,7 +105,7 @@ let rpgTeleportationPointsGui = (event, player, page) => {
  */
 let rpgAchivementOverviewGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.darkAqua('Achivements overview')), 6, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
         let playerAchivements = playerSaveData.rifts[player.persistentData.activeRift].achivements
         let slotX = 0
@@ -154,7 +154,7 @@ let rpgAchivementDetailsGui = (event, player, page, key) => {
     let playerAchivements = playerAchivement.achivements
     let dataAchivements = dataAchivement.achivements
     player.openChestGUI(getColoredText({ text: dataAchivement.name.text + ' achivements overview', color: dataAchivement.name.color }), 6, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let slotX = 0
         let slotY = 0
         for (let key in dataAchivements) {
@@ -185,7 +185,7 @@ let rpgAchivementDetailsGui = (event, player, page, key) => {
  */
 let rpgClassOverviewGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.darkAqua('Classes overview')), 6, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
         let playerClasses = playerSaveData.rifts[player.persistentData.activeRift].classes
         let playerCurrencies = playerSaveData.rifts[player.persistentData.activeRift].currencies
@@ -259,7 +259,7 @@ let rpgClassOverviewGui = (event, player, page) => {
  */
 let rpgClassDetailsGui = (event, player, page, classKey) => {
     player.openChestGUI(getColoredText({ text: 'Class ' + classes[classKey].name.text + ' details', color: classes[classKey].name.color }), 6, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
         let playerCurrencies = playerSaveData.rifts[player.persistentData.activeRift].currencies
         let activePlayerClass = playerSaveData.rifts[player.persistentData.activeRift].classes[classKey]
@@ -330,7 +330,7 @@ let rpgClassDetailsGui = (event, player, page, classKey) => {
  */
 let rpgItemModificationGui = (event, player, page, slotSelected) => {
     player.openChestGUI(Text.of(Text.darkAqua('Item modification')), 6, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
         let drawX = 0
         let drawY = 6
@@ -354,7 +354,7 @@ let rpgItemModificationGui = (event, player, page, slotSelected) => {
         })
         gui.slot(0, 5, slot => {
             slot.item = Item.of('minecraft:barrier').withName(Text.of(Text.darkAqua('Return')))
-            slot.leftClicked = e => console.log(gui.capturedInventory)
+            slot.leftClicked = e => player.getSlot(5).set(Item.of("minecraft:acacia_boat"))
         })
     })
 }
@@ -365,7 +365,7 @@ let rpgItemModificationGui = (event, player, page, slotSelected) => {
  */
 let rpgLevelsMenuGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.darkAqua('Levels overview')), 6, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
         let playerLevelData = playerSaveData.rifts[player.persistentData.activeRift].levels
         let drawX = 0
@@ -411,7 +411,7 @@ let rpgLevelDetailsGui = (event, player, page, key) => {
     let playerLevel = playerLevelData[key]
     let dataLevel = levels[key]
     player.openChestGUI(getColoredText({ text: dataLevel.name.text + ' level details', color: dataLevel.name.color }), 6, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let toSkip = 29 * page
         let toForget = toSkip + 29
         if (toForget > dataLevel.milestones.length) {
@@ -508,7 +508,7 @@ function formatMilestoneIcon(icon, dataMilestone) {
  */
 let rpgShopGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.darkAqua('Shop')), 6, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
         if (page == 0) {
             let slotX = 0
@@ -651,7 +651,7 @@ function createShopButton(event, player, gui, buttonType, offers, index, x, y) {
  */
 let rpgStatsGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.darkAqua('Stats overview')), 6, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
         let playerStats = playerSaveData.rifts[player.persistentData.activeRift].stats
         let icon1 = Item.of('minecraft:emerald').withName(Text.of(Text.green('Currencies:')))
@@ -711,7 +711,7 @@ let rpgStatsGui = (event, player, page) => {
 let rpgQuestMenuGui = (event, player, page) => {
     let quests = event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].quests
     player.openChestGUI(Text.of(Text.darkAqua('Quest overview')), 6, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         gui.slot(8, 5, slot => {
             slot.item = Item.of('minecraft:barrier').withName(Text.of(Text.darkAqua('Return')))
             slot.leftClicked = e => rpgMainMenuGui(event, player, 0)
@@ -743,7 +743,7 @@ let rpgQuestDetailsMenu = (event, player, page, questIndex) => {
     let quests = event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].quests
     let quest = quests[questIndex]
     player.openChestGUI(getColoredText(quest.name), 3, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         gui.slot(8, 2, slot => {
             slot.item = Item.of('minecraft:barrier').withName(Text.of(Text.darkAqua('Return')))
             slot.leftClicked = e => rpgQuestMenuGui(event, player, 0)
@@ -794,7 +794,7 @@ let rpgQuestDetailsMenu = (event, player, page, questIndex) => {
  */
 let rpgOperatorGui = (event, player, page) => {
     player.openChestGUI(Text.of(Text.red('Operator gui')), 6, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         gui.slot(0, 0, slot => {
             slot.item = Item.of('minecraft:paper').withName(Text.of(Text.red('Reset player quests')))
             slot.leftClicked = e => selectPlayerGui(event, player, 0, 'reset_player_quests')
@@ -851,7 +851,7 @@ let rpgOperatorGui = (event, player, page) => {
  */
 let selectPlayerGui = (event, player, page, usecase) => {
     player.openChestGUI(Text.of(Text.red('Select player')), 6, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let drawX = 0
         let drawY = 0
         event.server.players.forEach(selectedPlayer => {
@@ -903,7 +903,7 @@ let selectPlayerGui = (event, player, page, usecase) => {
  */
 let rpgDialogueGui = (event, player, page, chatData, isCutscene) => {
     player.openChestGUI(getColoredText(chatData.npcName), 2, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let canBeClosed = false
         gui.closed = () => {
             if (canBeClosed == false) {
@@ -949,7 +949,7 @@ let rpgDialogueGui = (event, player, page, chatData, isCutscene) => {
 }
 let rpgChooseDialogueGui = (event, player, page, dialogueOptions, npcName) => {
     player.openChestGUI(npcName, 2, gui => {
-        gui.playerSlots = false
+        gui.playerSlots = true
         let quests = event.server.persistentData.playerData[player.stringUuid].rifts[player.persistentData.activeRift].quests
         gui.slot(0, 0, slot => {
             slot.item = Item.of('minecraft:paper').withName(Text.aqua('What do you want to talk about?'))

@@ -48,5 +48,9 @@ function spawnEnemy(e, x, y, z, dimension, data) {
         persistentData.hpBars = data.hpBars
         persistentData.activeHpBar = 1
     }
+    if (data.spawnOnDeathAmount) {
+        persistentData.spawnOnDeath = data.spawnOnDeath
+        persistentData.spawnOnDeathAmount = data.spawnOnDeathAmount
+    }
     entity.spawn()
 }

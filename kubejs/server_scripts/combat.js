@@ -283,6 +283,13 @@ function enemyDied(e, enemy) {
             enemy.persistentData.activeHpBar += 1
         }
     }
+    if(cancelDamage == false) {
+        if(enemy.persistentData.spawnOnDeathAmount) {
+            for(let i = enemy.persistentData.spawnOnDeathAmount;i > 0;i--) {
+                spawnEnemy(e, enemy.x, enemy.y, enemy.z, enemy.level.dimension.toString(), enemy.persistentData.spawnOnDeath[Math.floor(Math.random() * enemy.persistentData.spawnOnDeath.length)])
+            }
+        }
+    }
     if (cancelDamage) {
         return true
     } else return false
