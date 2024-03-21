@@ -22,8 +22,16 @@ function playerTick(e,player) {
         }
     }
     // TODO Move to gui
+    let message = Text.of('')
     if(player.persistentData.maxMana) {
-        player.sendSystemMessage(Text.blue(`Mana: ${player.persistentData.mana} / ${player.persistentData.maxMana}`),true)
+        message.append(Text.blue(`Mana: ${player.persistentData.mana} / ${player.persistentData.maxMana} `))
+    }
+    let rayTrace = player.rayTrace().entity
+    if(rayTrace != null) {
+        message.append(Text.green('Entity persistent data: '+rayTrace.persistentData+' '))
+    }
+    if(message) {
+        player.sendSystemMessage(message,true)
     }
     if(player.persistentData.manaRegenCooldown >= player.persistentData.manaCooldown) {
         player.persistentData.manaRegenCooldown = 0
