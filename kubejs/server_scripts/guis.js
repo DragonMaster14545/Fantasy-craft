@@ -36,23 +36,23 @@ let rpgMainMenuGui = (event, player, page) => {
             slot.item = Item.of('minecraft:gold_ingot').withName(Text.of(Text.darkAqua('Achivements')))
             slot.leftClicked = e => rpgAchivementOverviewGui(event, player, 0)
         })
-        if(playerSaveData.rifts[player.persistentData.activeRift].teleportationPoints.unlocked == true) {
+        if (playerSaveData.rifts[player.persistentData.activeRift].teleportationPoints.unlocked == true) {
             gui.slot(5, 0, slot => {
                 slot.item = Item.of('minecraft:ender_pearl').withName(Text.of(Text.darkPurple('Teleportation points')))
                 slot.leftClicked = e => rpgTeleportationPointsGui(event, player, 0)
             })
         }
         //if(mainQuestProgress >= 1) {
-            gui.slot(6, 0, slot => {
-                slot.item = Item.of('minecraft:chest').withName(Text.of(Text.darkAqua('Shop')))
-                slot.leftClicked = e => rpgShopGui(event, player, 0)
-            })
+        gui.slot(6, 0, slot => {
+            slot.item = Item.of('minecraft:chest').withName(Text.of(Text.darkAqua('Shop')))
+            slot.leftClicked = e => rpgShopGui(event, player, 0)
+        })
         //}
         //if(mainQuestProgress >= 5) {
-            gui.slot(7, 0, slot => {
-                slot.item = Item.of('minecraft:smithing_table').withName(Text.of(Text.darkAqua('Item modification')))
-                slot.leftClicked = e => rpgItemModificationGui(event, player, 0)
-            })
+        gui.slot(7, 0, slot => {
+            slot.item = Item.of('minecraft:smithing_table').withName(Text.of(Text.darkAqua('Item modification')))
+            slot.leftClicked = e => rpgItemModificationGui(event, player, 0)
+        })
         //}
         gui.slot(0, 3, slot => {
             slot.item = Item.of('minecraft:netherite_ingot').withName(Text.of(Text.red('Operator menu')))
@@ -72,24 +72,24 @@ let rpgTeleportationPointsGui = (event, player, page) => {
         let playerTeleportationPoints = playerSaveData.rifts[player.persistentData.activeRift].teleportationPoints
         let slotX = 0
         let slotY = 0
-        for(let key in teleportationPoints[player.persistentData.activeRift]) {
+        for (let key in teleportationPoints[player.persistentData.activeRift]) {
             let playerTeleportationPoint = playerTeleportationPoints[key]
             let dataTeleportationPoint = teleportationPoints[player.persistentData.activeRift][key]
-            if(playerTeleportationPoint.unlocked == true) {
-               let icon = Item.of(dataTeleportationPoint.icon).withName(getColoredText(dataTeleportationPoint.name))
-               let savedKey = key
-               gui.slot(slotX, slotY, slot => {
-                slot.item = icon
-                   slot.leftClicked = e => {
-                    player.teleportTo(event.server.getLevel(dataTeleportationPoint.dim), dataTeleportationPoint.x, dataTeleportationPoint.y, dataTeleportationPoint.z, [], player.yaw, player.pitch)
-                    event.server.runCommandSilent(`/execute in ${dataTeleportationPoint.dim} run photon fx kubejs:player_spawn block ${dataTeleportationPoint.x} ${dataTeleportationPoint.y} ${dataTeleportationPoint.z}`)
-                   }
-               })
-               slotX += 1
-               if (slotX >= 9) {
-                   slotX = 0
-                   slotY += 1
-               }
+            if (playerTeleportationPoint.unlocked == true) {
+                let icon = Item.of(dataTeleportationPoint.icon).withName(getColoredText(dataTeleportationPoint.name))
+                let savedKey = key
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                    slot.leftClicked = e => {
+                        player.teleportTo(event.server.getLevel(dataTeleportationPoint.dim), dataTeleportationPoint.x, dataTeleportationPoint.y, dataTeleportationPoint.z, [], player.yaw, player.pitch)
+                        event.server.runCommandSilent(`/execute in ${dataTeleportationPoint.dim} run photon fx kubejs:player_spawn block ${dataTeleportationPoint.x} ${dataTeleportationPoint.y} ${dataTeleportationPoint.z}`)
+                    }
+                })
+                slotX += 1
+                if (slotX >= 9) {
+                    slotX = 0
+                    slotY += 1
+                }
             }
         }
         gui.slot(8, 5, slot => {
@@ -110,24 +110,24 @@ let rpgAchivementOverviewGui = (event, player, page) => {
         let playerAchivements = playerSaveData.rifts[player.persistentData.activeRift].achivements
         let slotX = 0
         let slotY = 0
-        for(let key in achivements[player.persistentData.activeRift]) {
+        for (let key in achivements[player.persistentData.activeRift]) {
             let playerAchivement = playerAchivements[key]
             let dataAchivement = achivements[player.persistentData.activeRift][key]
             let icon
-            if(playerAchivement.completed == true) {
-               icon = Item.of(dataAchivement.iconCompleted)
+            if (playerAchivement.completed == true) {
+                icon = Item.of(dataAchivement.iconCompleted)
             } else {
                 icon = Item.of(dataAchivement.icon)
             }
             icon = icon.withName(getColoredText(dataAchivement.name))
-            icon = icon.withLore(Text.aqua('Achivements completed: ' + playerAchivement.progress+' / '+dataAchivement.achivements.length))
+            icon = icon.withLore(Text.aqua('Achivements completed: ' + playerAchivement.progress + ' / ' + dataAchivement.achivements.length))
             dataAchivement.description.forEach(line => {
                 icon = icon.withLore(getColoredText(line))
             })
             let savedKey = key
             gui.slot(slotX, slotY, slot => {
                 slot.item = icon
-                slot.leftClicked = e => rpgAchivementDetailsGui(event, player, 0,savedKey)
+                slot.leftClicked = e => rpgAchivementDetailsGui(event, player, 0, savedKey)
             })
             slotX += 1
             if (slotX >= 9) {
@@ -146,25 +146,25 @@ let rpgAchivementOverviewGui = (event, player, page) => {
  * @param {Integer} page 
  * @param {Internal.NetworkEventJS} event 
  */
-let rpgAchivementDetailsGui = (event, player, page,key) => {
+let rpgAchivementDetailsGui = (event, player, page, key) => {
     let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
     let playerAchivementData = playerSaveData.rifts[player.persistentData.activeRift].achivements
     let playerAchivement = playerAchivementData[key]
     let dataAchivement = achivements[player.persistentData.activeRift][key]
     let playerAchivements = playerAchivement.achivements
     let dataAchivements = dataAchivement.achivements
-    player.openChestGUI(getColoredText({text:dataAchivement.name.text+' achivements overview',color:dataAchivement.name.color}), 6, gui => {
+    player.openChestGUI(getColoredText({ text: dataAchivement.name.text + ' achivements overview', color: dataAchivement.name.color }), 6, gui => {
         gui.playerSlots = false
         let slotX = 0
         let slotY = 0
-        for(let key in dataAchivements) {
+        for (let key in dataAchivements) {
             let playerSelectedAchivement = playerAchivements[key]
             let dataSelectedAchivement = dataAchivements[key]
             let modifiedDataSelectedAchivement = Object.assign({}, dataSelectedAchivement)
             modifiedDataSelectedAchivement.completed = playerSelectedAchivement.completed
             modifiedDataSelectedAchivement.task.progress = playerSelectedAchivement.progress
             gui.slot(slotX, slotY, slot => {
-                slot.item = questFormateStep(event,player,modifiedDataSelectedAchivement,true,true)
+                slot.item = questFormateStep(event, player, modifiedDataSelectedAchivement, true, true)
             })
             slotX += 1
             if (slotX >= 9) {
@@ -189,39 +189,39 @@ let rpgClassOverviewGui = (event, player, page) => {
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
         let playerClasses = playerSaveData.rifts[player.persistentData.activeRift].classes
         let playerCurrencies = playerSaveData.rifts[player.persistentData.activeRift].currencies
-        for(let key in classes[player.persistentData.activeRift]) {
+        for (let key in classes[player.persistentData.activeRift]) {
             let activeClass = classes[player.persistentData.activeRift][key]
             let activePlayerClass = playerClasses[key]
-            if(activeClass.y - page >= 0) {
+            if (activeClass.y - page >= 0) {
                 let icon
-                if(activePlayerClass.owned == true) {
+                if (activePlayerClass.owned == true) {
                     icon = Item.of(activeClass.iconOwned)
                     icon = icon.withLore(Text.green('Already unlocked'))
                 } else {
                     icon = Item.of(activeClass.icon)
-                    icon = icon.withLore(getColoredText({text:'Costs '+formatBigDecimal(BigDecimal(activeClass.cost))+' / '+formatBigDecimal(BigDecimal(playerCurrencies.evolution_points))+' '+currencies.evolution_points.name.text,color:currencies.evolution_points.name.color}))
+                    icon = icon.withLore(getColoredText({ text: 'Costs ' + formatBigDecimal(BigDecimal(activeClass.cost)) + ' / ' + formatBigDecimal(BigDecimal(playerCurrencies.evolution_points)) + ' ' + currencies.evolution_points.name.text, color: currencies.evolution_points.name.color }))
                 }
                 icon = icon.withName(getColoredText(activeClass.name))
                 activeClass.description.forEach(line => {
                     icon = icon.withLore(getColoredText(line))
                 })
-                gui.slot(activeClass.x, activeClass.y-page, slot => {
+                gui.slot(activeClass.x, activeClass.y - page, slot => {
                     slot.item = icon
                     let actualKey = key
                     slot.leftClicked = e => {
-                        if(activePlayerClass.owned == true) {
-                            if(activeClass.skills) {
+                        if (activePlayerClass.owned == true) {
+                            if (activeClass.skills) {
                                 rpgClassDetailsGui(event, player, 0, actualKey)
                             }
                         } else {
                             if (BigDecimal(playerCurrencies.evolution_points).compareTo(BigDecimal(activeClass.cost)) >= 0) {
                                 let canBuy = true
                                 activeClass.requirements.forEach(requirement => {
-                                    if(playerClasses[requirement].owned == false) {
+                                    if (playerClasses[requirement].owned == false) {
                                         canBuy = false
                                     }
                                 })
-                                if(canBuy) {
+                                if (canBuy) {
                                     playerCurrencies.evolution_points = BigDecimal(playerCurrencies.evolution_points).subtract(BigDecimal(activeClass.cost))
                                     activePlayerClass.owned = true
                                     rpgClassOverviewGui(event, player, page)
@@ -236,15 +236,15 @@ let rpgClassOverviewGui = (event, player, page) => {
                 })
             }
         }
-        if(page > 0) {
+        if (page > 0) {
             gui.slot(0, 5, slot => {
                 slot.item = Item.of('minecraft:arrow').withName(Text.of(Text.darkAqua('Go up')))
-                slot.leftClicked = e => rpgClassOverviewGui(event, player, page-1)
+                slot.leftClicked = e => rpgClassOverviewGui(event, player, page - 1)
             })
         }
         gui.slot(7, 5, slot => {
             slot.item = Item.of('minecraft:arrow').withName(Text.of(Text.darkAqua('Go down')))
-            slot.leftClicked = e => rpgClassOverviewGui(event, player, page+1)
+            slot.leftClicked = e => rpgClassOverviewGui(event, player, page + 1)
         })
         gui.slot(8, 5, slot => {
             slot.item = Item.of('minecraft:barrier').withName(Text.of(Text.darkAqua('Return')))
@@ -258,42 +258,42 @@ let rpgClassOverviewGui = (event, player, page) => {
  * @param {Internal.NetworkEventJS} event 
  */
 let rpgClassDetailsGui = (event, player, page, classKey) => {
-    player.openChestGUI(getColoredText({text:'Class '+classes[classKey].name.text+' details',color:classes[classKey].name.color}), 6, gui => {
+    player.openChestGUI(getColoredText({ text: 'Class ' + classes[classKey].name.text + ' details', color: classes[classKey].name.color }), 6, gui => {
         gui.playerSlots = false
         let playerSaveData = event.server.persistentData.playerData[player.stringUuid]
         let playerCurrencies = playerSaveData.rifts[player.persistentData.activeRift].currencies
         let activePlayerClass = playerSaveData.rifts[player.persistentData.activeRift].classes[classKey]
         let activeClass = classes[player.persistentData.activeRift][classKey]
         let skills = activeClass.skills
-        for(let key in skills) {
+        for (let key in skills) {
             let activeSkill = skills[key]
             let activePlayerSkill = activePlayerClass.skills[key]
-            if(activeSkill.y - page >= 0) {
+            if (activeSkill.y - page >= 0) {
                 let icon
-                if(activePlayerSkill.owned == true) {
+                if (activePlayerSkill.owned == true) {
                     icon = Item.of(activeSkill.iconOwned)
                     icon = icon.withLore(Text.green('Already unlocked'))
                 } else {
                     icon = Item.of(activeSkill.icon)
-                    icon = icon.withLore(getColoredText({text:'Costs '+formatBigDecimal(BigDecimal(activeSkill.cost))+' / '+formatBigDecimal(BigDecimal(playerCurrencies.skill_points))+' '+currencies.skill_points.name.text,color:currencies.skill_points.name.color}))
+                    icon = icon.withLore(getColoredText({ text: 'Costs ' + formatBigDecimal(BigDecimal(activeSkill.cost)) + ' / ' + formatBigDecimal(BigDecimal(playerCurrencies.skill_points)) + ' ' + currencies.skill_points.name.text, color: currencies.skill_points.name.color }))
                 }
-                icon = formatMilestoneIcon(icon,activeSkill)
-                gui.slot(activeSkill.x, activeSkill.y-page, slot => {
+                icon = formatMilestoneIcon(icon, activeSkill)
+                gui.slot(activeSkill.x, activeSkill.y - page, slot => {
                     slot.item = icon
                     slot.leftClicked = e => {
-                        if(activePlayerSkill.owned == false) {
+                        if (activePlayerSkill.owned == false) {
                             if (BigDecimal(playerCurrencies.skill_points).compareTo(BigDecimal(activeSkill.cost)) >= 0) {
                                 let canBuy = true
                                 activeSkill.requirements.forEach(requirement => {
-                                    if(activePlayerClass.skills[requirement].owned == false) {
+                                    if (activePlayerClass.skills[requirement].owned == false) {
                                         canBuy = false
                                     }
                                 })
-                                if(canBuy) {
+                                if (canBuy) {
                                     playerCurrencies.skill_points = BigDecimal(playerCurrencies.skill_points).subtract(BigDecimal(activeSkill.cost))
                                     activePlayerSkill.owned = true
-                                    claimMilestoneReward(event,player,activeSkill)
-                                    rpgClassDetailsGui(event, player, page,classKey)
+                                    claimMilestoneReward(event, player, activeSkill)
+                                    rpgClassDetailsGui(event, player, page, classKey)
                                 } else {
                                     player.notify(Text.red('Could not unlock'), Text.red('Unlock prervious first'))
                                 }
@@ -307,15 +307,15 @@ let rpgClassDetailsGui = (event, player, page, classKey) => {
                 })
             }
         }
-        if(page > 0) {
+        if (page > 0) {
             gui.slot(0, 5, slot => {
                 slot.item = Item.of('minecraft:arrow').withName(Text.of(Text.darkAqua('Go up')))
-                slot.leftClicked = e => rpgClassDetailsGui(event, player, page-1,classKey)
+                slot.leftClicked = e => rpgClassDetailsGui(event, player, page - 1, classKey)
             })
         }
         gui.slot(7, 5, slot => {
             slot.item = Item.of('minecraft:arrow').withName(Text.of(Text.darkAqua('Go down')))
-            slot.leftClicked = e => rpgClassDetailsGui(event, player, page+1,classKey)
+            slot.leftClicked = e => rpgClassDetailsGui(event, player, page + 1, classKey)
         })
         gui.slot(8, 5, slot => {
             slot.item = Item.of('minecraft:barrier').withName(Text.of(Text.darkAqua('Return')))
@@ -444,7 +444,7 @@ let rpgLevelDetailsGui = (event, player, page, key) => {
                 } else {
                     icon = Item.of(dataMilestone.icon)
                 }
-                icon = formatMilestoneIcon(icon,dataMilestone)
+                icon = formatMilestoneIcon(icon, dataMilestone)
                 slot.item = icon
             })
             if (drawY == 0) {
@@ -475,27 +475,27 @@ let rpgLevelDetailsGui = (event, player, page, key) => {
         })
     })
 }
-function formatMilestoneIcon(icon,dataMilestone) {
-    if(dataMilestone.type == 'stat') {
+function formatMilestoneIcon(icon, dataMilestone) {
+    if (dataMilestone.type == 'stat') {
         let stat = stats[dataMilestone.id]
         icon = icon.withName(getColoredText(stat.name))
         icon = icon.withLore(Text.green('Amount: ' + dataMilestone.amount))
-        if(dataMilestone.level) {
+        if (dataMilestone.level) {
             icon = icon.withLore(Text.green('Level required: ' + dataMilestone.level))
         }
-    } else if(dataMilestone.type == 'text') {
+    } else if (dataMilestone.type == 'text') {
         icon = icon.withName(getColoredText(dataMilestone.name))
         dataMilestone.description.forEach(line => {
             icon = icon.withLore(getColoredText(line))
         })
-        if(dataMilestone.level) {
+        if (dataMilestone.level) {
             icon = icon.withLore(Text.green('Level required: ' + dataMilestone.level))
         }
-    } else if(dataMilestone.type == 'currency') {
+    } else if (dataMilestone.type == 'currency') {
         let currency = currencies[dataMilestone.id]
         icon = icon.withName(getColoredText(currency.name))
         icon = icon.withLore(Text.green('Amount: ' + formatBigDecimal(BigDecimal(dataMilestone.amount))))
-        if(dataMilestone.level) {
+        if (dataMilestone.level) {
             icon = icon.withLore(Text.green('Level required: ' + dataMilestone.level))
         }
     }
@@ -889,7 +889,7 @@ let selectPlayerGui = (event, player, page, usecase) => {
             slot.item = Item.of('minecraft:barrier').withName(Text.of(Text.darkAqua('Return')))
             slot.leftClicked = e => {
                 //if (usecase == 'reset_player_quests' || usecase == 'open_test_dialogue' || usecase == 'reset_player') {
-                    rpgOperatorGui(event, player, 0)
+                rpgOperatorGui(event, player, 0)
                 //}
             }
         })
