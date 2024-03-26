@@ -6,48 +6,64 @@ PlayerEvents.loggedIn(e => {
 ServerEvents.tick(e => {
     serverTimerTick(e)
     projectileTick(e)
+    trapTick(e)
+    corpsTick(e)
     entitySpawnTick(e)
+    debuffAreaTick(e)
     e.server.players.forEach(player => {
         playerTick(e, player)
+    })
+    e.server.entities.forEach(entity => {
+        entityTick(e,entity)
     })
 })
 function playerTick(e, player) {
     let playerData = e.server.persistentData.playerData[player.stringUuid]
-    if (playerData.servants.length >= 1) {
-        servantTick(e, player)
-    }
-    if (playerData.cutscene) {
-        if (playerData.cutscene.steps) {
-            cutsceneTick(e, player)
+    if(playerData) {
+        if (playerData.servants.length >= 1) {
+            servantTick(e, player)
         }
-    }
-    // TODO Move to gui
-    let message = Text.of('')
-    if (player.persistentData.maxMana) {
-        message.append(Text.blue(`Mana: ${player.persistentData.mana} / ${player.persistentData.maxMana} `))
-    }
-    let rayTrace = player.rayTrace().entity
-    if (rayTrace != null) {
-        message.append(Text.green('Entity persistent data: ' + rayTrace.persistentData + ' '))
-    }
-    if (message) {
-        player.sendSystemMessage(message, true)
-    }
-    if (player.persistentData.manaRegenCooldown >= player.persistentData.manaCooldown) {
-        player.persistentData.manaRegenCooldown = 0
-        player.persistentData.mana += player.persistentData.manaRegenRegen
-        if (player.persistentData.mana > player.persistentData.maxMana) {
-            player.persistentData.mana = player.persistentData.maxMana
+        if (playerData.cutscene) {
+            if (playerData.cutscene.steps) {
+                cutsceneTick(e, player)
+            }
         }
-    } else {
-        player.persistentData.manaRegenCooldown++
-    }
-    if (player.persistentData.hpRegenCooldown >= player.persistentData.hpCooldown) {
-        player.persistentData.hpRegenCooldown = 0
-        // TODO implement health regen
-        //player.persistentData.hp += player.persistentData.hpRegenRegen
-    } else {
-        player.persistentData.hpRegenCooldown++
+        // TODO Move to gui
+        let message = Text.of('')
+        if (player.persistentData.maxMana) {
+            message.append(Text.blue(`Mana: ${player.persistentData.mana} / ${player.persistentData.maxMana} `))
+        }
+        if(player.persistentData.magicBlocked) {
+            message.append(Text.red('Magic blocked '))
+            if(player.persistentData.magicBlockedCooldown) {
+                player.persistentData.magicBlockedCooldown -= 1
+            } else {
+                player.persistentData.magicBlocked = false
+            }
+        }
+        let rayTrace = player.rayTrace().entity
+        if (rayTrace != null) {
+            message.append(Text.green('Entity persistent data: ' + rayTrace.persistentData + ' '))
+        }
+        if (message) {
+            player.sendSystemMessage(message, true)
+        }
+        if (player.persistentData.manaRegenCooldown >= player.persistentData.manaCooldown) {
+            player.persistentData.manaRegenCooldown = 0
+            player.persistentData.mana += player.persistentData.manaRegenRegen
+            if (player.persistentData.mana > player.persistentData.maxMana) {
+                player.persistentData.mana = player.persistentData.maxMana
+            }
+        } else {
+            player.persistentData.manaRegenCooldown++
+        }
+        if (player.persistentData.hpRegenCooldown >= player.persistentData.hpCooldown) {
+            player.persistentData.hpRegenCooldown = 0
+            // TODO implement health regen
+            //player.persistentData.hp += player.persistentData.hpRegenRegen
+        } else {
+            player.persistentData.hpRegenCooldown++
+        }
     }
 }
 function serverTimerTick(e) {
@@ -181,6 +197,12 @@ function setUpServer(e) {
     }
     if (!serverPersistantData.projectiles) {
         serverPersistantData.projectiles = []
+    }
+    if (!serverPersistantData.traps) {
+        serverPersistantData.traps = []
+    }
+    if (!serverPersistantData.corpses) {
+        serverPersistantData.corpses = []
     }
     if (!serverPersistantData.players) {
         serverPersistantData.players = 0

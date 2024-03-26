@@ -73,3 +73,40 @@ function rpgNpcInteraction(e, player, entity) {
         }
     }
 }
+global.NPCS.forEach(npc => {
+    EntityJSEvents.addGoalSelectors('kubejs:'+npc.id, e => {
+        e.customGoal(
+            'move_to_persistent_data_position',
+            1,
+            mob => {
+                return true
+            },
+            mob => {
+                return true
+            },
+            true,
+            mob => {
+                if (mob.persistentData.target) {
+                    mob.getNavigation().moveTo(mob.getNavigation().createPath(mob.persistentData.targetX, mob.persistentData.targetY, mob.persistentData.targetZ, 0.1), mob.persistentData.speed);
+                }
+            },
+            mob => {
+                mob.getNavigation().stop();
+            },
+            true,
+            mob => {
+                if (mob.persistentData.target) {
+                    mob.getNavigation().moveTo(mob.getNavigation().createPath(mob.persistentData.targetX, mob.persistentData.targetY, mob.persistentData.targetZ, 0.1), mob.persistentData.speed);
+                    let targetpos = mob.getNavigation().targetPos
+                    if (targetpos) {
+                        if (mob.distanceToSqr(targetpos) <= 0.5) {
+                            mob.getNavigation().stop()
+                            mob.persistentData.target = false
+                            mob.deltaMovement = 0
+                        }
+                    }
+                }
+            }
+        );
+    })
+})

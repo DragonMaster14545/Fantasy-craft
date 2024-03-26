@@ -3,6 +3,15 @@ NetworkEvents.dataReceived('KeyPressed', e => {
     let key = e.data.key
     if (key == 'open_rpg_main_menu') {
         rpgMainMenuGui(e, player, 0)
+    } else if(key == 'show_rpg_entity_info') {
+        let entity = player.rayTrace(32).entity
+        if(entity) {
+            if(entity.isLiving()) {
+                rpgEnttiyDetailsGui(e, player, 0,entity)
+            }
+        }
+    } else if(key == 'show_rpg_area_info') {
+        rpgAreaDetailsGui(e, player, 0)
     }
 })
 
@@ -58,6 +67,307 @@ let rpgMainMenuGui = (event, player, page) => {
             slot.item = Item.of('minecraft:netherite_ingot').withName(Text.of(Text.red('Operator menu')))
             slot.leftClicked = e => rpgOperatorGui(event, player, 0)
         })
+    })
+}
+/**
+ * @param {Internal.ServerPlayer} player 
+ * @param {Integer} page 
+ * @param {Internal.NetworkEventJS} event 
+ * @param {Internal.Entity} entity 
+ */
+let rpgAreaDetailsGui = (event, player, page) => {
+    player.openChestGUI(Text.of(Text.darkRed('Area details')), 6, gui => {
+        gui.playerSlots = true
+        let slotX = 0
+        let slotY = 0
+        let dim = player.level
+        let block = player.block
+        function increaseX() {
+            slotX += 1
+            if (slotX >= 9) {
+                slotX = 0
+                slotY += 1
+            }
+        }
+        let icon = Item.of('minecraft:amethyst_shard').withName(Text.red('Rift'))
+        icon = icon.withLore(getColoredText({text:'Active rift: '+rifts[player.persistentData.activeRift].name.text,color:rifts[player.persistentData.activeRift].name.color}))
+        gui.slot(slotX, slotY, slot => {
+            slot.item = icon
+        })
+        increaseX()
+        let areas = []
+        debuffAreas.forEach(area => {
+            if(isPointInsideCube(area.x1, area.y1, area.z1, area.x2, area.y2, area.z2, player.x, player.y, player.z, dim.dimension.toString(), area.dimension)) {
+                areas.push(area)
+            }
+        })
+        areas.forEach(area => {
+            let icon = Item.of('minecraft:stone').withName(Text.red('Debuff area'))
+            if(area.type == 'damage') {
+                icon = icon.withLore(Text.red('Deals '+area.damage+' damage every '+formatTimeShort(area.maxCooldown)))
+            } else if(area.type == 'effects') {
+                for (let key in area.effects) {
+                    let selectedEffect = area.effects[key]
+                    icon = icon.withLore({text:'Gives '+effects[key].name.text+' level '+selectedEffect.level,color:effects[key].name.color})
+                }
+            } else if(area.type == 'noPlayerMagic') {
+                icon = icon.withLore(Text.aqua('Blocks player magic'))
+            }
+            if(area.affects == 'players') {
+                icon = icon.withLore(Text.red('Only affects players'))
+            } else if(area.affects == 'enemies') {
+                icon = icon.withLore(Text.red('Only affects enemies'))
+            } else if(area.affects == 'all') {
+                icon = icon.withLore(Text.red('Affects all entities'))
+            }
+            gui.slot(slotX, slotY, slot => {
+                slot.item = icon
+            })
+            increaseX()
+        })
+    })
+}
+/**
+ * @param {Internal.ServerPlayer} player 
+ * @param {Integer} page 
+ * @param {Internal.NetworkEventJS} event 
+ * @param {Internal.Entity} entity 
+ */
+let rpgEnttiyDetailsGui = (event, player, page, entity) => {
+    player.openChestGUI(Text.of(Text.darkRed('Entity details')), 6, gui => {
+        gui.playerSlots = true
+        let persistentData = entity.persistentData
+        let slotX = 0
+        let slotY = 0
+        function increaseX() {
+            slotX += 1
+            if (slotX >= 9) {
+                slotX = 0
+                slotY += 1
+            }
+        }
+        if(entity.isPlayer()) {
+            let playerSaveData = event.server.persistentData.playerData[entity.stringUuid]
+            let activePlayerRift = playerSaveData.rifts[player.persistentData.activeRift]
+            let icon = Item.playerHead(entity.username).withName(Text.aqua('Details of: '+entity.username))
+            icon = icon.withLore(getColoredText({text:'Active rift: '+rifts[player.persistentData.activeRift].name.text,color:rifts[player.persistentData.activeRift].name.color}))
+            icon = icon.withLore(Text.gold('Main quest progress: '+activePlayerRift.mainQuestProgress))
+            icon = icon.withLore(Text.gray('Universal level: '+activePlayerRift.levels.universal.level))
+            gui.slot(slotX, slotY, slot => {
+                slot.item = icon
+            })
+            increaseX()
+        } else {
+            let icon
+            if(Item.exists(entity.type+'_spawn_egg')) {
+               icon = Item.of(entity.type+'_spawn_egg')
+            } else {
+                icon = Item.of("minecraft:iron_sword")
+            }
+            if(entity.customName) {
+                icon = icon.withName(Text.aqua('Details of: ').append(entity.customName))
+            } else {
+                let type = entity.type
+                type = type.substring( type.indexOf(':') + 1).trim()
+                icon = icon.withName(Text.aqua('Details of: '+type))
+            }
+            if(persistentData.maxHp) {
+                icon = icon.withLore(Text.red('Hp: '+entity.health+' / '+persistentData.maxHp))
+            } else {
+                icon = icon.withLore(Text.red('Hp: '+entity.health+' / '+entity.maxHealth))
+            }
+            if(persistentData.damage) {
+                icon = icon.withLore(Text.darkRed('Damage: '+persistentData.damage))
+            }
+            if(persistentData.armor) {
+                icon = icon.withLore(Text.blue('Damage: '+persistentData.armor))
+            }
+            gui.slot(slotX, slotY, slot => {
+                slot.item = icon
+            })
+            increaseX()
+            if(persistentData.hpBars) {
+                let icon = Item.of('minecraft:totem_of_undying').withName(Text.red('Hp bars'))
+                icon = icon.withLore(Text.red('Hp bars left: '+(persistentData.hpBars-persistentData.activeHpBar)+' / '+persistentData.hpBars))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.spawnOnDeathAmount) {
+                let icon = Item.of('minecraft:wither_skeleton_skull').withName(Text.red('Spawn on death'))
+                icon = icon.withLore(Text.red('Will spawn '+persistentData.spawnOnDeathAmount+' enemies on death'))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.effectsOnHit) {
+                let icon = Item.of('minecraft:tipped_arrow').withName(Text.lightPurple('Inflicts effects when hitting you'))
+                persistentData.effectsOnHit.forEach(effect => {
+                    for(let key in effects) {
+                        if(effects[key].id == effect.id) {
+                            icon = icon.withLore(getColoredText(effects[key].name))
+                        }
+                    }
+                })
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.summons) {
+                let icon = Item.of('minecraft:zombie_spawn_egg').withName(Text.red('Summons'))
+                icon = icon.withLore(Text.red('Will summon '+persistentData.summonAmount+' enemies every '+formatTimeShort(persistentData.maxSummonCooldown)))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.projectiles) {
+                let icon = Item.of('minecraft:arrow').withName(Text.red('Magic projectiles'))
+                icon = icon.withLore(Text.red('Will shoot a magic projectile every '+formatTimeShort(persistentData.maxProjectileCooldown)))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.nearEnemyBoosts) {
+                let icon = Item.of('minecraft:potion').withName(Text.red('Boosts nearby enemies'))
+                icon = icon.withLore(Text.red('Will boost nearby enemies in a range of '+persistentData.nearEnemyBoostsDistance+' blocks, every '+formatTimeShort(persistentData.maxNearEnemyBoostsCooldown)))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.selfHealAmount) {
+                let icon = Item.of('minecraft:red_concrete').withName(Text.red('Heals itsself'))
+                icon = icon.withLore(Text.red('Will heal itsself for '+persistentData.selfHealAmount+' hp, every '+formatTimeShort(persistentData.maxSelfHealCooldown)))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.nearEnemyHealAmount) {
+                let icon = Item.of('minecraft:red_concrete').withName(Text.red('Heals nearby enemies'))
+                icon = icon.withLore(Text.red('Will heal nearby enemies in a range of '+persistentData.nearEnemyHealDistance+' blocks, every '+formatTimeShort(persistentData.maxNearEnemyHealCooldown)+' for '+persistentData.nearEnemyHealAmount+' hp'))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.selfHealAmount) {
+                let icon = Item.of('minecraft:potion').withName(Text.red('Gives effects to itsself'))
+                icon = icon.withLore(Text.red('Will give effects to itsself every '+formatTimeShort(persistentData.maxSelfHealCooldown)))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.nearEntityGiveEffects) {
+                let icon = Item.of('minecraft:potion').withName(Text.red('Gives effects to nearby enemies'))
+                icon = icon.withLore(Text.red('Will give effects to nearby enemies in a range of '+persistentData.nearEntityGiveEffectsDistance+' blocks, every '+formatTimeShort(persistentData.maxNearEntityGiveEffectsCooldown)))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.traps) {
+                let icon = Item.of('minecraft:tripwire_hook').withName(Text.red('Traps'))
+                icon = icon.withLore(Text.red('Will put down a trap every '+formatTimeShort(persistentData.maxTrapCooldown)))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.producesCorpse) {
+                let icon = Item.of('minecraft:bone').withName(Text.red('Produces corpse'))
+                icon = icon.withLore(Text.red('Will leave a corpse behind when dieing that lasts '+formatTimeShort(persistentData.corpseDuration)))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.maxRespawnDeadEnemiesCooldown) {
+                let icon = Item.of('minecraft:skeleton_skull').withName(Text.red('Revives dead enemies'))
+                icon = icon.withLore(Text.red('Will revive '+persistentData.respawnDeadEnemiesAmount+' dead enemies, every '+formatTimeShort(persistentData.maxRespawnDeadEnemiesCooldown)+' in a max range of '+persistentData.respawnDeadEnemiesDistance+' blocks'))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.absorbable) {
+                let icon = Item.of('minecraft:golden_apple').withName(Text.red('Can be absorbed'))
+                icon = icon.withLore(Text.red('Can be absorbed by some special enemies to give them boosts'))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.maxAbsorbEnemiesCooldown) {
+                let icon = Item.of('minecraft:enchanted_golden_apple').withName(Text.red('Absorbs enemies'))
+                icon = icon.withLore(Text.red('Will absorb '+persistentData.absorbEnemiesAmount+' absorbable enemies, every '+formatTimeShort(persistentData.maxAbsorbEnemiesCooldown)+' in a max range of '+persistentData.absorbEnemiesDistance+' blocks'))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.blockPlayerMagicDistance) {
+                let icon = Item.of('minecraft:barrier').withName(Text.red('Blocks player magic'))
+                icon = icon.withLore(Text.red('Blocks all player magic in a range of '+persistentData.blockPlayerMagicDistance+' blocks'))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.bossBarColor) {
+                let icon = Item.of('minecraft:dragon_head').withName(Text.red('Boss'))
+                icon = icon.withLore(Text.red('This enemy appears to be a boss'))
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+            if(persistentData.stages) {
+                let icon = Item.of('minecraft:iron_ingot').withName(Text.red('Multiple stages'))
+                icon = icon.withLore(Text.red('This enemy has '+persistentData.stages.length+' stages'))
+                persistentData.stages.forEach(stage => {
+                    let changeStatsAlreadyDisplayed = false
+                    if(stage.requirementType == 'hp') {
+                        icon = icon.withLore(Text.blue('-Triggers when this enemy falls below '+stage.requirementAmount+' hp'))
+                    } else if(stage.requirementType == 'hpBars') {
+                        icon = icon.withLore(Text.blue('-Triggers when this enemy has '+(persistentData.hpBars-stage.requirementAmount)+' hp bars left'))
+                    }
+                    if(stage.stagesRequired) {
+                        stage.stagesRequired.forEach(stageRequired => {
+                            icon = icon.withLore(Text.blue(' Needs the '+(parseFloat(stageRequired)+1)+'st stage to already be completed'))
+                        })
+                    }
+                    if(stage.claimed) {
+                        icon = icon.withLore(Text.green(' This stage was already triggered'))
+                    }
+                    icon = icon.withLore(Text.aqua(' When reaching this stage the enemy will:'))
+                    stage.rewards.forEach(reward => {
+                        if(reward.type == 'heal') {
+                            icon = icon.withLore(Text.red(' Heal '+reward.amount+' hp'))
+                        } else if(reward.type == 'giveEffects') {
+                            icon = icon.withLore(Text.red(' Give itsself some effects'))
+                        } else if(reward.type == 'summonEnemies') {
+                            icon = icon.withLore(Text.red(' Summon '+reward.amount+' enemies'))
+                        } else if(reward.type == 'setData' || reward.type == 'removeData' || reward.type == 'setMaxHp' || reward.type == 'setMaxHpWithHeal') {
+                            if(!changeStatsAlreadyDisplayed) {
+                                changeStatsAlreadyDisplayed = true
+                                icon = icon.withLore(Text.red(' Change its abilities or stats'))
+                            }
+                        }
+                    })
+                })
+                gui.slot(slotX, slotY, slot => {
+                    slot.item = icon
+                })
+                increaseX()
+            }
+        }
     })
 }
 /**
@@ -812,10 +1122,14 @@ let rpgOperatorGui = (event, player, page) => {
             slot.leftClicked = e => selectPlayerGui(event, player, 0, 'reset_player')
         })
         gui.slot(4, 0, slot => {
-            slot.item = Item.of('minecraft:red_concrete').withName(Text.of(Text.red('Reset server'))).withLore(Text.red('Caution, can break things'))
+            slot.item = Item.of('minecraft:red_concrete').withName(Text.of(Text.red('Reset server and all players'))).withLore(Text.red('Caution, can break things'))
             slot.leftClicked = e => {
                 event.server.runCommandSilent('/kubejs persistent_data server remove *')
                 setUpServer(event)
+                event.server.players.forEach(serverPLayer => {
+                    serverPLayer.persistentData.initiated = false
+                    setUpPlayer(event,serverPLayer)
+                })
             }
         })
         gui.slot(5, 0, slot => {
@@ -837,6 +1151,10 @@ let rpgOperatorGui = (event, player, page) => {
         gui.slot(0, 1, slot => {
             slot.item = Item.of('minecraft:diamond').withName(Text.of(Text.yellow('Give 10 skill and evolution points')))
             slot.leftClicked = e => selectPlayerGui(event, player, 0, 'give_skill_points')
+        })
+        gui.slot(1, 1, slot => {
+            slot.item = Item.of('minecraft:stone').withName(Text.of(Text.yellow('Show entity details of self')))
+            slot.leftClicked = e => rpgEnttiyDetailsGui(event, player, 0,player)
         })
         gui.slot(8, 5, slot => {
             slot.item = Item.of('minecraft:barrier').withName(Text.of(Text.darkAqua('Return')))

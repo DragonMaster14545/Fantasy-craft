@@ -63,7 +63,7 @@ function giveArmorXp(e, player, amount) {
     updateItems(e, player)
 }
 EntityEvents.hurt(e => {
-    if (e.entity.persistentData.dead == undefined && e.damage > 0) {
+    if (e.entity.persistentData.dead != true && e.damage > 0) {
         if (processDamage(e, e.source.actual, e.entity, 'unknown', e.entity.health)) {
             e.cancel()
         } else if (e.entity.health - e.damage < 0) {
@@ -78,39 +78,3 @@ EntityEvents.hurt(e => {
 })
 
 
-
-EntityJSEvents.addGoalSelectors('kubejs:npc1', e => {
-    e.customGoal(
-        'move_to_persistent_data_position',
-        1,
-        mob => {
-            return true
-        },
-        mob => {
-            return true
-        },
-        true,
-        mob => {
-            if (mob.persistentData.target) {
-                mob.getNavigation().moveTo(mob.getNavigation().createPath(mob.persistentData.targetX, mob.persistentData.targetY, mob.persistentData.targetZ, 0.1), mob.persistentData.speed);
-            }
-        },
-        mob => {
-            mob.getNavigation().stop();
-        },
-        true,
-        mob => {
-            if (mob.persistentData.target) {
-                mob.getNavigation().moveTo(mob.getNavigation().createPath(mob.persistentData.targetX, mob.persistentData.targetY, mob.persistentData.targetZ, 0.1), mob.persistentData.speed);
-                let targetpos = mob.getNavigation().targetPos
-                if (targetpos) {
-                    if (mob.distanceToSqr(targetpos) <= 0.5) {
-                        mob.getNavigation().stop()
-                        mob.persistentData.target = false
-                        mob.deltaMovement = 0
-                    }
-                }
-            }
-        }
-    );
-})

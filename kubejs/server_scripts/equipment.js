@@ -111,6 +111,39 @@ function updateItem(e, player, item) {
                 item = item.withLore(Text.aqua('  Duration: ' + formatTimeShort(summon.duration)))
             })
         }
+        if(customData.traps) {
+            item = item.withLore(Text.aqua('Traps:'))
+            customData.traps.forEach(trap => {
+                item = item.withLore(Text.red('- trap'))
+                let typesText = "  "
+                trap.types.forEach(type => {
+                    typesText = typesText + types[type.asString].icon
+                })
+                item = item.withLore(Text.white(typesText))
+                if(trap.damage) {
+                    item = item.withLore(Text.red('  Damage: ' + trap.damage))
+                }
+                if(trap.effects) {
+                    for (let key in trap.effects) {
+                        let selectedEffect = trap.effects[key]
+                        item = item.withLore(getColoredText({ text: '  Inflicts ' + formatTimeShort(selectedEffect.duration) + ' ' + effects[key].name.text + ' level ' + selectedEffect.level, color: effects[key].name.color }))
+                    }
+                }
+                item = item.withLore(Text.yellow('  Activation range: ' + trap.activationRange))
+                if(trap.duration) {
+                    item = item.withLore(Text.aqua('  Duration: ' + formatTimeShort(trap.duration)))
+                } else {
+                    item = item.withLore(Text.aqua('  Duration: infinite'))
+                }
+                if(trap.activations) {
+                    item = item.withLore(Text.blue('  Activations: '+trap.activations))
+                }
+                if(trap.onlyOwnerCanSee) {
+                    item = item.withLore(Text.green('  Only owner can see'))
+                }
+            })
+        }
+
     }
     return item
 }
@@ -136,8 +169,8 @@ function projectileTick(e) {
                 projectile.x += projectile.movementX * multiplier
                 projectile.y += projectile.movementY * multiplier
                 projectile.z += projectile.movementZ * multiplier
-                let player = e.server.getPlayerList().getPlayer(projectile.owner)
                 let dim = e.server.getLevel(projectile.dimension)
+                let player = dim.getEntity(projectile.owner)
                 let block = dim.getBlock(projectile.x, projectile.y, projectile.z)
                 let box
                 if (projectile.area) {
@@ -152,10 +185,8 @@ function projectileTick(e) {
                         if (projectile.remove == false) {
                             let entity = entitiesWithin[i]
                             let isOwner = false
-                            if (entity.isPlayer) {
-                                if (entity.stringUuid == player.stringUuid) {
-                                    isOwner = true
-                                }
+                            if (entity.stringUuid == player.stringUuid) {
+                                isOwner = true
                             }
                             if (entity.isLiving() && !isOwner) {
                                 let couldDamage
@@ -186,6 +217,67 @@ function projectileTick(e) {
         e.server.persistentData.projectiles = e.server.persistentData.projectiles.filter(projectile => !(projectile.remove == true))
     }
 }
+function trapTick(e) {
+    let traps = e.server.persistentData.traps
+    traps.forEach(trap => {
+        let dim = e.server.getLevel(trap.dimension)
+        let block = dim.getBlock(trap.x,trap.y,trap.z)
+        let owner = dim.getEntity(trap.owner)
+        if(trap.onlyOwnerCanSee) {
+            if(owner.isPlayer()) {
+                for(let i = trap.activationRange; i>0;i--) {
+                    drawClientCubeToSinglePlayer(owner,[{x:trap.x,y:trap.y,z:trap.z,dimension:trap.dimension,particle:trap.particle,radius:i,points:i*20}])
+                }
+            }
+        } else {
+            for(let i = trap.activationRange; i>0;i--) {
+                drawCube(e,{x1:trap.x+i,y1:trap.y+i,z1:trap.z+i,x2:trap.x-i,y2:trap.y-i,z2:trap.z-i,dimension:trap.dimension,particle:trap.particle,points:i*40})
+            }
+        }
+        if(!owner) {
+            trap.remove = true
+        }
+        let box = AABB.of(trap.x - trap.activationRange, trap.y - trap.activationRange, trap.z - trap.activationRange, trap.x + trap.activationRange, trap.y + trap.activationRange, trap.z + trap.activationRange)
+        let entitiesWithin = dim.getEntitiesWithin(box)
+        let entitiesFound = entitiesWithin.length
+        if (entitiesFound > 0) {
+            for (let i = 0; entitiesFound - 1 >= i; i++) {
+                if (trap.remove == false) {
+                    let entity = entitiesWithin[i]
+                    let isOwner = false
+                    if (entity.stringUuid == owner.stringUuid) {
+                        isOwner = true
+                    }
+                    if (entity.isLiving() && !isOwner) {
+                        let couldDamage
+                        couldDamage = processDamage(e, owner, entity, 'wand', entity.health, trap.wandId, { types: trap.types, damage:trap.damage, type: 'trap' })
+                        if (couldDamage) {
+                            if (trap.activations) {
+                                if (trap.activations > 1) {
+                                    trap.activations -= 1
+                                } else {
+                                    trap.remove = true
+                                }
+                            } else {
+                                trap.remove = true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (block.getPlayersInRadius(30) < 1) {
+            trap.remove = true
+        }
+        if(trap.duration) {
+            trap.duration -= 1
+            if(trap.duration <= 0) {
+                trap.remove = true
+            }
+        }
+    })
+    e.server.persistentData.traps = e.server.persistentData.traps.filter(trap => !(trap.remove == true))
+}
 ItemEvents.rightClicked(e => {
     let player = e.entity
     let manaCost = 0
@@ -196,35 +288,61 @@ ItemEvents.rightClicked(e => {
             let customDataId = player.mainHandItem.nbt.customDataId
             let customData = e.server.persistentData.playerData[player.stringUuid].itemDetails[customDataId]
             if (itemTypes.wands.includes(customData.type)) {
-                wandId = customDataId
-                manaCost = customData.manaCost
-                speed = customData.speed
-                if (player.persistentData.mana >= manaCost) {
-                    player.persistentData.mana -= manaCost
-                    let movement = calculateMovement(player.getViewXRot(1), player.getViewYRot(1))
-                    let projectileData = { particle: 'minecraft:crit', types: customData.types, damage: getPlayerWandItemDamage(e, player, wandId), type: customData.type, owner: player.getStringUuid(), speed: speed, wandId: wandId, x: player.x, y: player.y + 1.5, z: player.z, movementX: movement.movementX, movementY: movement.movementY, movementZ: movement.movementZ, dimension: player.level.dimension.toString(), remove: false }
-                    if (customData.pierce) {
-                        projectileData.pierce = customData.pierce
-                    }
-                    if (customData.area) {
-                        projectileData.area = customData.area
-                    }
-                    if (projectileData.damage.damage >= 0 || projectileData.damage.effects) {
-                        e.server.persistentData.projectiles.push(projectileData)
-                    }
-                    if (customData.summons) {
-                        customData.summons.forEach(summon => {
-                            if (summon.type == 'mele_servant') {
-                                addServant(e, player, { type: 'mele', drawRadius: 0.15, points: 5, verticalPoints: 5, rotation: 2.5, particle: 'minecraft:flame', maxCooldown: summon.attackCooldown, range: summon.range, duration: summon.duration, attack: { speed: summon.attack.speed, types: summon.attack.types, damage: summon.attack.damage } }, summon.amount)
-                            } else if (summon.type == 'ranged_servant') {
-                                addServant(e, player, { type: 'ranged', drawRadius: 0.15, points: 5, verticalPoints: 5, rotation: 2.5, particle: 'minecraft:soul_fire_flame', maxCooldown: summon.attackCooldown, range: summon.range, duration: summon.duration, projectile: { speed: summon.projectile.speed, types: summon.projectile.types, damage: summon.projectile.damage, particle: 'minecraft:dragon_breath' } }, summon.amount)
-                            } else if (summon.type == 'buff_servant') {
-                                addServant(e, player, { type: 'buff', drawRadius: 0.15, points: 5, verticalPoints: 5, rotation: 2.5, particle: 'minecraft:cloud', duration: summon.duration, buffs: summon.buffs }, summon.amount)
+                if(!player.persistentData.magicBlocked) {
+                    wandId = customDataId
+                    manaCost = customData.manaCost
+                    speed = customData.speed
+                    if (player.persistentData.mana >= manaCost) {
+                        player.persistentData.mana -= manaCost
+                        let movement = calculateMovement(player.getViewXRot(1), player.getViewYRot(1))
+                        let projectileData = { particle: 'minecraft:crit', types: customData.types, damage: getPlayerWandItemDamage(e, player, wandId), type: customData.type, owner: player.getStringUuid(), speed: speed, wandId: wandId, x: player.x, y: player.y + 1.5, z: player.z, movementX: movement.movementX, movementY: movement.movementY, movementZ: movement.movementZ, dimension: player.level.dimension.toString(), remove: false }
+                        if (projectileData.damage.damage >= 0 || projectileData.damage.effects) {
+                            if (customData.pierce) {
+                                projectileData.pierce = customData.pierce
                             }
-                        })
+                            if (customData.area) {
+                                projectileData.area = customData.area
+                            }
+                            e.server.persistentData.projectiles.push(projectileData)
+                        }
+                        if (customData.summons) {
+                            customData.summons.forEach(summon => {
+                                if (summon.type == 'mele_servant') {
+                                    addServant(e, player, { type: 'mele', drawRadius: 0.15, points: 5, verticalPoints: 5, rotation: 2.5, particle: 'minecraft:flame', maxCooldown: summon.attackCooldown, range: summon.range, duration: summon.duration, attack: { speed: summon.attack.speed, types: summon.attack.types, damage: summon.attack.damage } }, summon.amount)
+                                } else if (summon.type == 'ranged_servant') {
+                                    addServant(e, player, { type: 'ranged', drawRadius: 0.15, points: 5, verticalPoints: 5, rotation: 2.5, particle: 'minecraft:soul_fire_flame', maxCooldown: summon.attackCooldown, range: summon.range, duration: summon.duration, projectile: { speed: summon.projectile.speed, types: summon.projectile.types, damage: summon.projectile.damage, particle: 'minecraft:dragon_breath' } }, summon.amount)
+                                } else if (summon.type == 'buff_servant') {
+                                    addServant(e, player, { type: 'buff', drawRadius: 0.15, points: 5, verticalPoints: 5, rotation: 2.5, particle: 'minecraft:cloud', duration: summon.duration, buffs: summon.buffs }, summon.amount)
+                                }
+                            })
+                        }
+                        if(customData.traps) {
+                            customData.traps.forEach(trap => {
+                                let damage = {}
+                                if(trap.damage) {
+                                    damage.damage = trap.damage
+                                } else {
+                                    damage.damage = 0
+                                }
+                                if (trap.effects) {
+                                    damage.effects = []
+                                    for (let key in trap.effects) {
+                                        let selectedEffect = trap.effects[key]
+                                        damage.effects.push({ id: effects[key].id, duration: selectedEffect.duration, level: selectedEffect.level })
+                                    }
+                                }
+                                let trapData = {owner:player.stringUuid,x:player.x,y:player.y,z:player.z,dimension:player.level.dimension.toString(),types:trap.types,onlyOwnerCanSee:trap.onlyOwnerCanSee,activationRange:trap.activationRange,particle:trap.particle,activations:trap.activations,damage:damage,effects:trap.effects,duration:trap.duration,remove:false,wandId:wandId}
+                                e.server.persistentData.traps.push(trapData)
+                                for(let i = trap.activationRange; i>0;i--) {
+                                    drawCube(e,{x1:trapData.x+i,y1:trapData.y+i,z1:trapData.z+i,x2:trapData.x-i,y2:trapData.y-i,z2:trapData.z-i,dimension:trapData.dimension,particle:trap.particle,points:i*40})
+                                }
+                            })
+                        }
+                    } else {
+                        player.notify(Text.red('Cannot cast spell'), Text.red('Not enough mana'))
                     }
                 } else {
-                    player.notify(Text.red('Cannot cast spell'), Text.red('Not enough mana'))
+                    player.notify(Text.red('Cannot cast spell'), Text.red('Magic is blocked'))
                 }
             }
         }

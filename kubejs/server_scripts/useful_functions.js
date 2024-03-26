@@ -14,7 +14,7 @@ function getRandomCoordinate(minX, minY, minZ, maxX, maxY, maxZ) {
 
     return { x: Math.floor(randomX), y: Math.floor(randomY), z: Math.floor(randomZ) }
 }
-function isPointInsideRange(x1, y1, z1, x2, y2, z2, x3, y3, z3, dim, blockDim) {
+function isPointInsideCube(x1, y1, z1, x2, y2, z2, x3, y3, z3, dim, blockDim) {
     let minX = Math.min(x1, x2)
     let minY = Math.min(y1, y2)
     let minZ = Math.min(z1, z2)
@@ -78,7 +78,7 @@ function formatTimeLong(time) {
     } else if (time < 20 * 60 * 60 * 24 * 7 * 4.33 * 52) {
         return (time / (20 * 60 * 60 * 24 * 7 * 4.33)).toFixed(1) + ' months'
     } else {
-        return formatLargeNumber(time / (20 * 60 * 60 * 24 * 7 * 4.33 * 52)) + ' years'
+        return formatBigDecimal(BigDecimal(time / (20 * 60 * 60 * 24 * 7 * 4.33 * 52))) + ' years'
     }
 }
 function formatTimeShort(time) {
@@ -97,7 +97,7 @@ function formatTimeShort(time) {
     } else if (time < 20 * 60 * 60 * 24 * 7 * 4.33 * 52) {
         return (time / (20 * 60 * 60 * 24 * 7 * 4.33)).toFixed(1) + ' mo'
     } else {
-        return formatLargeNumber(time / (20 * 60 * 60 * 24 * 7 * 4.33 * 52)) + ' y'
+        return formatBigDecimal(BigDecimal(time / (20 * 60 * 60 * 24 * 7 * 4.33 * 52))) + ' y'
     }
 }
 function timeToTicks(amount, unit) {
@@ -305,7 +305,37 @@ function getBonus(e, player, type, bonusCategory, amount) {
     })
     for (let key in bonuses) {
         let stat = stats[key]
-        if (stat.type == type) {
+        if (stat.type == type || stat.type == 'any') {
+            if (stat.stat == bonusCategory) {
+                if (stat.mode == '+') {
+                    amount += bonuses[key].amount
+                } else if (stat.mode == '*') {
+                    amount *= bonuses[key].amount
+                } else if (stat.mode == '-') {
+                    amount -= bonuses[key].amount
+                } else if (stat.mode == '/') {
+                    amount /= bonuses[key].amount
+                }
+            }
+        }
+    }
+    return amount
+}
+function getEnemyBonus(e, entity, type, bonusCategory, amount) {
+    let persistentData = entity.persistentData
+    let tempStats = persistentData.tempStats
+    let bonuses = {}
+    for (let key in tempStats) {
+        let stat = tempStats[key]
+        if (bonuses[stat.id]) {
+            bonuses[stat.id].amount += stat.amount
+        } else {
+            bonuses[stat.id] = { amount: stat.amount }
+        }
+    }
+    for (let key in bonuses) {
+        let stat = enemyStats[key]
+        if (stat.type == type || stat.type == 'any') {
             if (stat.stat == bonusCategory) {
                 if (stat.mode == '+') {
                     amount += bonuses[key].amount
@@ -427,4 +457,14 @@ function isPlayerInsideCircle(player, circleData) {
     let maxY = circleCenterY + range
     let distance = Math.sqrt(Math.pow(player.x - circleCenterX, 2) + Math.pow(player.z - circleCenterZ, 2))
     return distance <= circleRadius && player.y >= minY && player.y <= maxY && player.level.dimension.toString() == circleDim
+}
+function isTargetInRange(selfX, selfY, selfZ, targetX, targetY, targetZ, range) {
+    let deltaX = Math.abs(targetX - selfX)
+    let deltaY = Math.abs(targetY - selfY)
+    let deltaZ = Math.abs(targetZ - selfZ)
+    if (deltaX <= range && deltaY <= range && deltaZ <= range) {
+        return true
+    } else {
+        return false
+    }
 }

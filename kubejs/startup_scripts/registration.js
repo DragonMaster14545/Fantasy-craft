@@ -1,4 +1,8 @@
 Platform.mods.kubejs.name = 'Fantasy craft'
+global.NPCS = [
+    {id:'npc1',eggColor1:0x0000FF,eggColor2:0x0099FF,animations:[{name:'idle',id:'ideling',chance:0.5}]},
+    {id:'normal_human_npc1',eggColor1:0x0000FF,eggColor2:0x0099FF,animations:[{name:'clap',id:'clapping',chance:0.3},{name:'wave_left',id:'waving_left',chance:0.3},{name:'wave_right',id:'waving_right',chance:0.3}]},
+]
 ItemEvents.toolTierRegistry(event => {
     event.add('fantasy_craft.mystery_lands_lv1', tier => {
         tier.uses = -1
@@ -50,36 +54,43 @@ StartupEvents.registry('mob_effect', event => {
     event.create('immovable').displayName('Immovable').modifyAttribute('generic.movement_speed', '33d6e469-1ea5-4dc7-9073-5b33104b4b0e', -100, 'multiply_total').modifyAttribute('forge:entity_gravity', '33d6e469-1ea5-4dc7-9073-5b33104b4b0e', 10000, 'multiply_total').color(Color.BLACK)
 })
 StartupEvents.registry('entity_type', event => {
-    event.create('npc1', 'entityjs:animal')
-        .eggItem(item => {
-            item.backgroundColor(0x0000FF)
-            item.highlightColor(0x0099FF)
-        })
-        .onInteract(ctx => {
-            if (ctx.hand == 'MAIN_HAND') {
-                if (!ctx.entity.getLevel().isClientSide()) return InteractionResult.PASS
-                Client.player.sendData('rpg_npc_interaction', { entity: ctx.entity.stringUuid, level: ctx.entity.level.dimension.toString() })
-            }
-            return InteractionResult.PASS
-        })
-        .isPersistenceRequired(true)
-        .isInvulnerableTo(ctx => {
-            if (ctx.damageSource.type().msgId() != 'genericKill') {
+    global.NPCS.forEach(npc => {
+        event.create(npc.id, 'entityjs:animal')
+            .eggItem(item => {
+                item.backgroundColor(npc.eggColor1)
+                item.highlightColor(npc.eggColor2)
+            })
+            .onInteract(ctx => {
+                if (ctx.hand == 'MAIN_HAND') {
+                    if (!ctx.entity.getLevel().isClientSide()) return InteractionResult.PASS
+                    Client.player.sendData('rpg_npc_interaction', { entity: ctx.entity.stringUuid, level: ctx.entity.level.dimension.toString() })
+                }
+                return InteractionResult.PASS
+            })
+            .isPersistenceRequired(true)
+            .isInvulnerableTo(ctx => {
+                if (ctx.damageSource.type().msgId() != 'genericKill') {
+                    return true
+                } else {
+                    return false
+                }
+            })
+            .isPushable(false)
+            .addAnimationController('custom_animations', 5, e => {
+                npc.animations.forEach(animation => {
+                    e.addTriggerableAnimation(animation.name, animation.id, 'play_once')
+                })
                 return true
-            } else {
-                return false
-            }
-        })
-        .isPushable(false)
-        .addAnimationController('idleAnimation', 5, e => {
-            e.addTriggerableAnimation('idle', 'idleing', 'play_once')
-            return true
-        })
-        .tick(entity => {
-            if (entity.age % 100 != 0) return
-            if (Math.random() <= 0.99) return
-            entity.triggerAnimation('idleAnimation', 'idleing')
-        })
+            })
+            .tick(entity => {
+                if (entity.age % 100 != 0) return
+                npc.animations.forEach(animation => {
+                    if (Math.random() <= animation.chance) {
+                        entity.triggerAnimation('custom_animations', animation.id)
+                    }
+                })
+            })
+    })
 })
 /*
 

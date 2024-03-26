@@ -14,6 +14,14 @@ EntityEvents.death(e => {
         testForKillQuests(e, player)
         removeQuests(e, player)
     }
+    if(e.entity.persistentData.producesCorpse) {
+        spawnCorpse(e,e.entity)
+    }
+    if(e.entity.persistentData.bossBarColor) { 
+        let bossBar = e.server.customBossEvents.get('fantasy_craft:'+e.entity.stringUuid)   
+        bossBar.removeAllPlayers()
+        e.server.customBossEvents.events.remove(bossBar)
+    }
 })
 PlayerEvents.inventoryChanged(e => {
     let player = e.entity

@@ -59,7 +59,7 @@ function processDamageUnknown(e, attacker, attacked, damageType, attackedHp, dat
         } else return false
     } else {
         if (attacker.persistentData.damage) {
-            damage = attacker.persistentData.damage
+            damage = getEnemyBonus(e,attacker,'any','damage',attacker.persistentData.damage)
             attackType = 'entity'
         } else return false
     }
@@ -70,7 +70,7 @@ function processDamageUnknown(e, attacker, attacked, damageType, attackedHp, dat
         damage -= damageBlocked
     } else {
         if (attacked.persistentData.armor) {
-            damage -= attacked.persistentData.armor
+            damage -= getEnemyBonus(e,attacked,'any','armor',attacked.persistentData.armor)
         }
     }
     if (damage <= 0) {
@@ -159,6 +159,16 @@ function processDamageUnknown(e, attacker, attacked, damageType, attackedHp, dat
                 }
             })
         }
+    } else {
+        if (attacker.persistentData.effectsOnHit) {
+            attacker.persistentData.effectsOnHit.forEach(effect => {
+                if (attacked.potionEffects.isActive(effect.id)) {
+                    attacked.potionEffects.add(effect.id, effect.duration + attacked.potionEffects.getDuration(effect.id), effect.level, false, true)
+                } else {
+                    attacked.potionEffects.add(effect.id, effect.duration, effect.level, false, true)
+                }
+            })
+        }
     }
     drawCircle(e, { particle: 'minecraft:crit', dimension: attacked.level.dimension.toString(), x: attacked.x, y: attacked.y, z: attacked.z, points: 20, radius: 1 })
     return true
@@ -184,9 +194,7 @@ function processDamageWand(e, attacker, attacked, damageType, attackedHp, wandId
     let typeDamageMultiplier = calculateTypeDamageMultiplier(attackerTypes, attackedTypes)
     let damage = 0
     let damageData
-    let playerData = e.server.persistentData.playerData[attacker.stringUuid]
-    let itemDataPath = playerData.itemDetails
-    if (itemTypes.wands.includes(data.type) || itemTypes.rangedServants.includes(data.type) || itemTypes.meleServants.includes(data.type)) {
+    if (itemTypes.wands.includes(data.type) || itemTypes.rangedServants.includes(data.type) || itemTypes.meleServants.includes(data.type) || data.type == 'enemyProjectile' || data.type == 'trap') {
         damageData = data.damage
         damage = damageData.damage
     } else return false
@@ -197,25 +205,41 @@ function processDamageWand(e, attacker, attacked, damageType, attackedHp, wandId
         damage -= damageBlocked
     } else {
         if (attacked.persistentData.armor) {
-            damage -= attacked.persistentData.armor
+            damage -= getEnemyBonus(e,attacked,'any','armor',attacked.persistentData.armor)
         }
     }
     if (damage <= 0) {
         damageBlocked += damage
         damage = 0
     }
-    let damageSource = attacked.damageSources().playerAttack(attacker)
-    if (attackedHp - damage > 0) {
-        attacked.health = attacked.health - damage
-        attacked.attack(damageSource, 0)
-    } else {
-        attacked.persistentData.dead = true
-        let cancelDamage
-        if (!attacked.isPlayer()) {
-            cancelDamage = enemyDied(e, attacked)
+    if(attacker.isPlayer()) {
+        let damageSource = attacked.damageSources().playerAttack(attacker)
+        if (attackedHp - damage > 0) {
+            attacked.health = attacked.health - damage
+            attacked.attack(damageSource, 0)
+        } else {
+            attacked.persistentData.dead = true
+            let cancelDamage
+            if (!attacked.isPlayer()) {
+                cancelDamage = enemyDied(e, attacked)
+            }
+            if (!cancelDamage) {
+                attacked.attack(damageSource, damage)
+            }
         }
-        if (!cancelDamage) {
-            attacked.attack(damageSource, damage)
+    } else {
+        let damageSource = attacked.damageSources().mobAttack(attacker)
+        if (attackedHp - damage > 0) {
+            attacked.health = attacked.health - damage
+            attacked.attack(damageSource, 0)
+        } else {
+            let cancelDamage
+            if (!attacked.isPlayer()) {
+                cancelDamage = enemyDied(e, attacked)
+            }
+            if (!cancelDamage) {
+                attacked.attack(damageSource, damage)
+            }
         }
     }
     if (damageData.effects) {
@@ -237,7 +261,9 @@ function processDamageWand(e, attacker, attacked, damageType, attackedHp, wandId
     if (attackedHp < damage) {
         xp = attackedHp * 0.1
     }
-    givePlayerCombatXp(e, attacker, xp, true, wandId, { types: types })
+    if(attacker.isPlayer()) {
+        givePlayerCombatXp(e, attacker, xp, true, wandId, { types: types })
+    }
     drawCircle(e, { particle: 'minecraft:crit', dimension: attacked.level.dimension.toString(), x: attacked.x, y: attacked.y, z: attacked.z, points: 20, radius: 1 })
     return true
 }
@@ -294,3 +320,6 @@ function enemyDied(e, enemy) {
         return true
     } else return false
 }
+PlayerEvents.respawned(e => {
+    e.entity.persistentData.dead = false
+})

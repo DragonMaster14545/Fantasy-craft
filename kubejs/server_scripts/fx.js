@@ -58,6 +58,29 @@ function drawClientSpheresToAllPlayers(e, x, y, z, spheres, dim) {
     }
   })
 }
+function drawClientSpheresToSinglePlayer(player, spheres) {
+   player.sendData('draw_spheres', { spheres: spheres })
+}
+function drawClientCirclesToAllPlayers(e, x, y, z, circles, dim) {
+  e.server.getLevel(dim).getPlayers().forEach(player => {
+    if (player.distanceToSqr(new Vec3d(x, y, z)) <= 50) {
+      player.sendData('draw_circles', { circles: circles })
+    }
+  })
+}
+function drawClientCirclesToSinglePlayer(player, circles) {
+   player.sendData('draw_circles', { circles: circles })
+}
+function drawClientCubeToAllPlayers(e, x, y, z, circles, dim) {
+  e.server.getLevel(dim).getPlayers().forEach(player => {
+    if (player.distanceToSqr(new Vec3d(x, y, z)) <= 50) {
+      player.sendData('draw_cubes', { cubes: cubes })
+    }
+  })
+}
+function drawClientCubeToSinglePlayer(player, circles) {
+   player.sendData('draw_cubes', { cubes: cubes })
+}
 function drawCube(e, cuboid) {
   let edges = [
     { x1: cuboid.x1, y1: cuboid.y1, z1: cuboid.z1, x2: cuboid.x2, y2: cuboid.y1, z2: cuboid.z1 },
@@ -82,7 +105,6 @@ function drawCube(e, cuboid) {
     });
   });
 }
-
 function getLinePoints(x1, y1, z1, x2, y2, z2, pointAmount) {
   let points = [];
   let dx = Math.abs(x2 - x1);
@@ -102,5 +124,21 @@ function getLinePoints(x1, y1, z1, x2, y2, z2, pointAmount) {
     z += zIncrement;
   }
   return points;
+}
+function spawnParticlesInCube(e,x1, y1, z1, x2, y2, z2, chance,particle,dimension) {
+  let level = e.server.getLevel(dimension)
+  let width = Math.abs(x2 - x1) + 1
+  let height = Math.abs(y2 - y1) + 1
+  let depth = Math.abs(z2 - z1) + 1
+  let totalBlocks = width * height * depth
+  let attempts = Math.ceil(totalBlocks * chance)
+  for (let i = 0; i < attempts; i++) {
+      if (Math.random() < chance) {
+          let randomX = Math.floor(Math.random() * width) + Math.min(x1, x2)
+          let randomY = Math.floor(Math.random() * height) + Math.min(y1, y2)
+          let randomZ = Math.floor(Math.random() * depth) + Math.min(z1, z2)
+          level.sendParticles(particle, randomX, randomY, randomZ, 0, 0, 0, 1, 0)
+      }
+  }
 }
 

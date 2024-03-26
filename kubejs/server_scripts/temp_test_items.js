@@ -30,6 +30,11 @@ function formatTempTestItem(e, player, item) {
             item = item.withLore(Text.green('Click to give test items'))
         } else if (count == 5) {
             item = item.withLore(Text.green('Click to spawn test quasar particle'))
+        } else if (count == 6) {
+            item = item.withLore(Text.green('Click entity to save it'))
+            item = item.withLore(Text.green('Click into the air to teleport entity to you'))
+        } else if (count == 7) {
+            item = item.withLore(Text.green('Click entity to get all its persistent data'))
         }
     }
     return item
@@ -75,11 +80,11 @@ ItemEvents.rightClicked('kubejs:cheat_item', e => {
         }
     } else if (count == 4) {
         //giveCustomItem(e,e.player,'kubejs:custom_chestplate',{armor:10,type:'chestplate',level:1,xp:0,maxXp:10,types:['neutral'],levelUpRewards:[{owned:0,id:'armor',amount:1},{owned:0,id:'luck',amount:1}]})
-        //giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'sword',level:1,xp:0,maxXp:10,types:['neutral'],levelUpRewards:[{owned:0,id:'damage',amount:1}]})
+        giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'sword',level:1,xp:0,maxXp:10,types:['neutral'],levelUpRewards:[{owned:0,id:'damage',amount:1}]})
         //giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'sword',level:1,xp:0,maxXp:10,area:3,pierce:3,types:['neutral'],levelUpRewards:[{owned:0,id:'damage',amount:1}]})
         //giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'sword',level:1,xp:0,maxXp:10,area:3,types:['neutral'],levelUpRewards:[{owned:0,id:'damage',amount:1}]})
         //giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'sword',level:1,xp:0,maxXp:10,effects:{poison:{duration:100,level:1}},types:['neutral'],levelUpRewards:[{owned:0,id:'damage',amount:1}]})
-        //giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'wand',level:1,xp:0,maxXp:10,manaCost:1,speed:1,pierce:2,types:['ice','water'],levelUpRewards:[{owned:0,id:'damage',amount:1},{owned:0,id:'manaCost',amount:-0.2},{owned:0,id:'speed',amount:0.5}]})
+        giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'wand',level:1,xp:0,maxXp:10,manaCost:1,speed:1,pierce:2,types:['ice','water'],levelUpRewards:[{owned:0,id:'damage',amount:1},{owned:0,id:'manaCost',amount:-0.2},{owned:0,id:'speed',amount:0.5}]})
         //giveCustomItem(e,e.player,'kubejs:custom_sword',{type:'wand',level:1,xp:0,maxXp:10,manaCost:1,summons:[{type:'mele_servant',amount:1,attackCooldown:100,range:20,duration:200,attack:{speed:1,types:['air'],damage:{damage:1}}}],types:['summoning'],levelUpRewards:[{owned:0,id:'damage',amount:1},{owned:0,id:'manaCost',amount:-0.2},{owned:0,id:'speed',amount:0.5}]})
         //giveCustomItem(e,e.player,'kubejs:custom_sword',{type:'wand',level:1,xp:0,maxXp:10,manaCost:1,summons:[{type:'ranged_servant',amount:1,attackCooldown:40,range:20,duration:200,projectile:{speed:1,types:['air'],damage:{damage:1}}}],types:['summoning'],levelUpRewards:[{owned:0,id:'damage',amount:1},{owned:0,id:'manaCost',amount:-0.2},{owned:0,id:'speed',amount:0.5}]})
         //giveCustomItem(e,e.player,'kubejs:custom_sword',{type:'wand',level:1,xp:0,maxXp:10,manaCost:1,summons:[{type:'buff_servant',amount:2,duration:200,buffs:[{id:'meleExtraDamage',amount:1}]}],types:['summoning'],levelUpRewards:[{owned:0,id:'damage',amount:1},{owned:0,id:'manaCost',amount:-0.2},{owned:0,id:'speed',amount:0.5}]})
@@ -87,7 +92,9 @@ ItemEvents.rightClicked('kubejs:cheat_item', e => {
         //giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'wand',level:1,xp:0,maxXp:10,manaCost:1,speed:1,area:3,types:['ice','water'],levelUpRewards:[{owned:0,id:'damage',amount:1},{owned:0,id:'manaCost',amount:-0.2},{owned:0,id:'speed',amount:0.5}]})
         //giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'wand',level:1,xp:0,maxXp:10,manaCost:1,speed:1,area:3,pierce:2,types:['ice','water'],levelUpRewards:[{owned:0,id:'damage',amount:1},{owned:0,id:'manaCost',amount:-0.2},{owned:0,id:'speed',amount:0.5}]})
         //giveCustomItem(e,e.player,'kubejs:custom_sword',{damage:10,type:'wand',level:1,xp:0,maxXp:10,manaCost:1,speed:1,area:3,pierce:10,types:['ice','water'],levelUpRewards:[{owned:0,id:'damage',amount:1},{owned:0,id:'manaCost',amount:-0.2},{owned:0,id:'speed',amount:0.5}]})
-        giveCustomItem(e, e.player, 'kubejs:custom_sword', { damage: 10, type: 'wand', level: 1, xp: 0, maxXp: 10, manaCost: 1, speed: 1, types: ['ice', 'water'], effects: { poison: { duration: 100, level: 1 } }, levelUpRewards: [{ owned: 0, id: 'damage', amount: 1 }, { owned: 0, id: 'manaCost', amount: -0.2 }, { owned: 0, id: 'speed', amount: 0.5 }] })
+        //giveCustomItem(e, e.player, 'kubejs:custom_sword', { damage: 10, type: 'wand', level: 1, xp: 0, maxXp: 10, manaCost: 1, speed: 1, types: ['ice', 'water'], effects: { poison: { duration: 100, level: 1 } }, levelUpRewards: [{ owned: 0, id: 'damage', amount: 1 }, { owned: 0, id: 'manaCost', amount: -0.2 }, { owned: 0, id: 'speed', amount: 0.5 }] })
+        //giveCustomItem(e, e.player, 'kubejs:custom_sword', {type:'wand',level:1,xp:0,maxXp:10,manaCost:1,traps:[{types:['fire'],onlyOwnerCanSee:false,activationRange:4.3,particle:'minecraft:crit',activations:2,damage:0,effects:{ poison: { duration: 100, level: 1 } }}],types:['fire'], levelUpRewards: [{ owned: 0, id: 'manaCost', amount: -0.2 }] })
+        giveCustomItem(e, e.player, 'kubejs:custom_sword', {type:'wand',level:1,xp:0,maxXp:10,manaCost:1,traps:[{duration:200,types:['fire'],onlyOwnerCanSee:false,activationRange:0.4,particle:'minecraft:crit',activations:1,damage:10}],types:['fire'], levelUpRewards: [{ owned: 0, id: 'manaCost', amount: -0.2 }] })
     } else if (count == 5) {
         let manager = $VeilRenderSystem.renderer().particleManager
         /*
@@ -95,6 +102,26 @@ ItemEvents.rightClicked('kubejs:cheat_item', e => {
         emitter.setPosition(<pos>) OR emitter.setAttachedEntity(entity)
         manager.addParticleSystem(emitter)
         */
+    } else if (count == 6) {
+        if(e.target.entity) {
+            e.item.nbt = {}
+            e.item.nbt.entity = e.target.entity.stringUuid
+        } else {
+            if(e.item.nbt.entity) {
+                let entity = e.entity.level.getEntity(e.item.nbt.entity)
+                if(entity) {
+                    entity.teleportTo( e.entity.level, e.entity.x, e.entity.y, e.entity.z, [], entity.yaw, entity.pitch)
+                }
+            }
+        }
+    } else if (count == 7) {
+        if(e.target.entity) {
+            let persistentData = e.target.entity.persistentData
+            e.entity.tell(Text.gold('Entity persistent data: '))
+            for(let key in persistentData) {
+                e.entity.tell(Text.blue(key+': ').append(Text.darkAqua(persistentData[key])))
+            }
+        }
     }
 })
 ServerEvents.tick(e => {
